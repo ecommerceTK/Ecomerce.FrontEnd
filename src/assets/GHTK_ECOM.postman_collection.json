@@ -1,0 +1,652 @@
+{
+	"info": {
+		"_postman_id": "847e6220-0704-4618-904e-00b1e83134be",
+		"name": "GHTK_ECOM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18839236"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"hoadamviet@gmail.com\",\n    \"password\": \"abc12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Hoa\",\n    \"password\": \"abc123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Active Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"hoadamviet@gmail.com\",\n    \"otp\": \"8840\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/registration/active",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"registration",
+						"active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resend Active Mail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/registration/active-mail?email=hoadamviet@gmail.com",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"registration",
+						"active-mail"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "hoadamviet@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/refreshToken?refreshToken=c3b6cff6-cb2a-477e-92a5-04aa9be495d5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"refreshToken"
+					],
+					"query": [
+						{
+							"key": "refreshToken",
+							"value": "c3b6cff6-cb2a-477e-92a5-04aa9be495d5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJIb2EiLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMjA4MTUxMiwiZXhwIjoxNzIyMDg1MTEyfQ.q8lrTUA5KaJvJX2kkHfkyk9_f95T_Uc0RV23_D51Ri6ELSrRctH8dZjkLQ5xYKXB",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/my-info",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"my-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Address",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0MUBnbWFpbC5jb20iLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMTcyNjg0MCwiZXhwIjoxNzIxNzMwNDQwfQ.zvld08b62LUUuz6Vfogo-psOPAClDrJRXblzG9idEvFNPt8W7LXYJ6KUyAIFqWy7",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Đàm Việt Hòa\",\n    \"phoneNumber\": \"0123456789\",\n    \"wardId\": 6,\n    \"addressDetail\": \"So 1 ngo 168\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/address/create_user_address",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"address",
+						"create_user_address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Address List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJIb2EiLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMjA4MTQ0MSwiZXhwIjoxNzIyMDg1MDQxfQ.USGrqGF9pZ_wUagW5IlfFBXnriHL5jm3dodmffnHuYZ_prnuXwp5E7yRJasDkzGw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/address/get_user_address_list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"address",
+						"get_user_address_list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Address",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0QGdtYWlsLmNvbSIsImlzcyI6InNob3BiYXNlIiwiaWF0IjoxNzIxMzczNTM5LCJleHAiOjE3MjEzNzM2NTl9.DQAEU5eDccY-l27X3Yn9kwp3_I6mvWJqaWvj78rI3mZkzEyo3Xw9e11pBE76w-XU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 14,\n    \"name\": \"Đàm Việt Hòa\",\n    \"phoneNumber\": \"0971906872\",\n    \"wardId\": 100,\n    \"addressDetail\": \"So 5 ngo 168\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/address/update_user_address",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"address",
+						"update_user_address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Default Address",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0QGdtYWlsLmNvbSIsImlzcyI6InNob3BiYXNlIiwiaWF0IjoxNzIxMzIzNDI3LCJleHAiOjE3MjEzMjM1NDd9.uzPPFEHZjqyQ_kMfY4tT8q7kEYtKuM62QUHeKb85tbV5deB7X-ZSxk5CEH_gP6l2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"addressId\": 11\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/address/set_default_address",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"address",
+						"set_default_address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Address",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0QGdtYWlsLmNvbSIsImlzcyI6InNob3BiYXNlIiwiaWF0IjoxNzIxMzU4NDY2LCJleHAiOjE3MjEzNTg1ODZ9.7g9ic0PsACKBo9zNNmV9toyB90HuYCndMfQ4XuKC0T3gyBu_gj6WeD5uMiq2rOmD",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/address/13",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"address",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Chil Address",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/address/get_child_address_list?parent_id=abc",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"address",
+						"get_child_address_list"
+					],
+					"query": [
+						{
+							"key": "parent_id",
+							"value": "abc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Become Seller",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0MUBnbWFpbC5jb20iLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMTcwNjUzNSwiZXhwIjoxNzIxNzEwMTM1fQ.zEj0_hukc4MXRNb6S-ycFQC17HF5qLK1VHKwJETekDTqvzqvTqnyQit1AVpN-y8I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"clothes shop\",\n    \"addressId\": 3,\n    \"addressDetail\": \"Clothes shop sell product made from organic\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/seller/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"seller",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seller Info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJob2FkYW12aWV0MUBnbWFpbC5jb20iLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMTcyMjk2NSwiZXhwIjoxNzIxNzI2NTY1fQ.BA2ulB69GGXd2KFCyN5iHxl_qX7Wm-Byx3nQVLeg-tEh7BNFR4aOLYt20Gbr38AQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/seller/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"seller",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJIaWV1IiwiaXNzIjoic2hvcGJhc2UiLCJpYXQiOjE3MjIwMTQyMTgsImV4cCI6MTcyMjAxNzgxOH0.Z1nFk9FdEKH6xVmwnVi_ldw3zzPNGDhzsEMheO99Yv-8p9LGsGt8d5SKaw8n0Emo\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Forgot Password Mail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"usernameOrEmail\": \"hoadamviet@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/password/forgot-mail",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"password",
+						"forgot-mail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"d4ce33b6-e0a7-49b3-8c87-5aafa598f0e1\",\n    \"newPassword\": \"abc@13456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/password/reset",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"password",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJIb2EiLCJpc3MiOiJzaG9wYmFzZSIsImlhdCI6MTcyMjIxOTc3NCwiZXhwIjoxNzIyMjIzMzc0fQ.1dGNaT8_U7BssC5tYQskiYhPUjqQzeyCQclrVfK-1oxmVgfC8n9dK2lA2HMptUu6",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"abc123456\",\n    \"newPassword\": \"abc1234567\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/auth/password/change-password",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"password",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

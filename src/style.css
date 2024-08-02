@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #01904a;
+  --text-color:#333;
+  --header-height: 120px;
+  --header-navbar-height: 33px;
+  --header-search-height: calc(var(--header-height) - var(--header-navbar-height));
+}
+
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background-color: rgba(245, 245, 245, 1);
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+[tabindex] {
+    outline: none;
+    /* border: none; */
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #a9a9a9;
+}
+
+.app-content {
+  display: flex;
+}
+
+#app {
+  height: 100vh;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

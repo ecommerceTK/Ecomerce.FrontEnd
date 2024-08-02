@@ -1,0 +1,34 @@
+.footer {
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        ul {
+            list-style: none;
+            margin-top: 24px;
+            li {
+                font-size: 1.6rem;
+                color: var(--text-color);
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                
+                &:hover {
+                    color: #b6b3b3;
+                    cursor: pointer;
+                }
+                .icon {
+                    font-size: 26px;
+                    margin: 0 12px;
+                    color: #fff;
+                }
+
+                img {
+                    width: 100px;
+                    margin-left: 36px;
+                }
+            }
+        }
+    
+}
