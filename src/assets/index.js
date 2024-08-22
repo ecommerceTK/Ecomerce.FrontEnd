@@ -4,10 +4,4 @@ import AppGallery from './app_gallery.png';
 import thoitrangnam from './thoitrangnam.png';
 import defaultAvatar from './defaultAvatar.jpg';
 
-export {
-    AppStore,
-    GGPlay,
-    AppGallery,
-    thoitrangnam,
-    defaultAvatar
-}
+export { AppStore, GGPlay, AppGallery, thoitrangnam, defaultAvatar };

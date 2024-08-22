@@ -1,0 +1,162 @@
+.item {
+    display: block;
+    margin-top: 10px;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    position: relative;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: transform linear 0.1s;
+    will-change: transform;
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 1px 20px 0 rgba(0, 0, 0, 0.05);
+    }
+    .img {
+        padding-top: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: top center;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+    }
+    .name {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: var(--text-color);
+        margin: 10px 10px 6px;
+        line-height: 1.8rem;
+        height: 3.6rem;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .price {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+
+        .priceOld {
+            font-size: 1.4rem;
+            color: #666;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        .priceCurrent {
+            font-size: 1.6rem;
+            color: var(--text-color);
+            margin-left: 10px;
+        }
+    }
+    .action {
+        display: flex;
+        justify-content: space-between;
+        margin: 6px 10px 0;
+        .Llike {
+            display: none;
+            color: #ee4d2d;
+        }
+        .like {
+            font-size: 1.4rem;
+            .notlike {
+                display: none;
+            }
+            .Llike {
+                display: inline-block;
+            }
+        }
+        .rating {
+            font-size: 1rem;
+            transform: scale(0.8);
+            transform-origin: right;
+            color: #d5d5d5;
+            margin-top: -1px;
+            margin-left: auto;
+        }
+        .star {
+            color: yellow;
+        }
+        .sold {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-left: 6px;
+        }
+    }
+    .itemOrigin {
+        display: flex;
+        justify-content: space-between;
+        margin: 3px 10px 0;
+        color: #595959;
+        font-size: 1.2rem;
+        font-weight: 300;
+    }
+    .itemFavorite {
+        position: absolute;
+        top: 10px;
+        left: -4px;
+        color: var(--primary-color);
+        background-color: currentColor;
+        font-size: 1.2rem;
+        font-weight: 500;
+        line-height: 1.6rem;
+        padding-right: 4px;
+        border-radius: 0 3px 3px 0;
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            border-top: 3px solid currentColor;
+            border-left: 3px solid transparent;
+            filter: brightness(60%);
+        }
+        span {
+            color: white;
+        }
+        .ii {
+            color: white;
+            font-size: 0.9rem;
+            margin: 0 2px 0 4px;
+        }
+    }
+    .saleOff {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 36px;
+        text-align: center;
+        background-color: rgb(255, 216, 64, 0.94);
+        padding-top: 2px;
+        border-top-right-radius: 2px;
+        &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: -5px;
+            border-width: 0 20px 5px;
+            border-style: solid;
+            color: rgb(255, 216, 64, 0.94);
+            border-color: transparent currentColor transparent currentColor;
+        }
+        .salePercent {
+            color: #ee4d2d;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 1.4rem;
+            position: relative;
+            top: -1px;
+        }
+
+        .saleLabel {
+            color: white;
+            font-size: 1.4rem;
+            line-height: 1.4rem;
+            font-weight: 500;
+            position: relative;
+            top: 20px;
+            left: -26px;
+        }
+    }
+}
