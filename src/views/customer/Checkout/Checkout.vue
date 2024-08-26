@@ -1,14 +1,97 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { defaultProduct } from '../../../assets'; 
+import mainServices from '../../../domain/mainServices';
 import ModalInfoAddress from '../../../components/modal/ModalInfoAddress.vue';
 
-const router = useRouter();
+const route = useRoute();
 const showModal = ref(true);
+const weight=ref(0);
+const items=ref([]);
+const address=ref('');
+const sumProduct = ref(0);
+const feeShip=ref(0);
+const total = ref(0);
+const info = ref(null);
 
-const goToOrder = () => {
-    router.push('/order');
-};
+const columns = [
+  {
+    title: 'Sản phẩm',
+    dataIndex: 'name',
+    key: 'name',
+    width: '48%',
+    ellipsis: true,
+  },
+  {
+    title: 'Giá',
+    dataIndex: 'price',
+    key: 'price',
+    colSpan: '16%', 
+    align:'center',
+  },
+  {
+    title: 'Số lượng',
+    dataIndex: 'quantity',
+    key: 'quantity',
+    colSpan: '16%', 
+    align:'center',
+  },
+  {
+    title: 'Thành tiền',
+    dataIndex: 'total',
+    key: 'total',
+    colSpan: '16%', 
+    align:'center',
+  }
+];
+
+const data = ref([]);
+
+const preOrderItems = ref([]);
+const getPreOrders = async () => {
+    try {
+        const res = await mainServices.getPreOrder(route.query.orderId);
+        preOrderItems.value = res.data.result;
+        data.value = preOrderItems.value.map((item, index) => ({
+            key: String(index + 1), 
+            imgUrl: item.image_url || defaultProduct, 
+            name: item.name, 
+            price:item.price,
+            quantity: item.quantity, 
+            total: item.price * item.quantity, 
+        }));
+        items.value = preOrderItems.value.map((item, index) => ({
+            name: item.name,
+            quantity: item.quantity,
+            weight: item.weight,
+        }));
+        weight.value = preOrderItems.value.reduce((acc, item) => acc + item.weight, 0);
+        sumProduct.value = preOrderItems.value.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    } catch(err) {
+        console.log(err);       
+    }
+}
+
+const handleInfoValue = (e) => {
+    info.value=e;
+    console.log(info.value);
+}
+
+const goToPay = async() => {
+    try {
+        const res = await mainServices.payment(route.query.orderId );
+        window.location.href = res.data.result;
+        console.log(res);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+onMounted(() => {
+    getPreOrders();
+})
+
 </script>
 <template>
     <div class="checkout">
@@ -18,7 +101,7 @@ const goToOrder = () => {
             >
                 Thanh toán
             </h2>
-            <div
+            <!-- <div
                 class="rounded border-solid border border-[var(--primary-color)]"
             >
                 <div
@@ -53,7 +136,44 @@ const goToOrder = () => {
                         >239.000đ</span
                     >
                 </div>
-            </div>
+            </div> -->
+            <a-table 
+            v-if="data.length>0"
+            class="mt-[48px] shadow-md" 
+            :columns="columns" 
+            :data-source="data"
+            :pagination="false"
+            >
+                <template #headerCell="{ column }">
+                    <div class="text-[2rem]">{{ column.title }}</div>
+                </template>
+                <template #bodyCell="{ column, record }">
+                    <template v-if="column.dataIndex === 'name'">
+                        <div class="flex items-center">
+                            <img
+                                class="w-[80px] object-cover cursor-pointer"
+                                :src="record.imgUrl? record.imgUrl:defaultProduct"
+                                alt=""
+                            />
+                            <p
+                                class="flex-1 flex flex-col text-[1.8rem] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
+                            >
+                                {{record.name}}
+                            </p>
+                        </div>
+                    </template>
+                    <template v-if="column.dataIndex === 'price'">
+                        <span class="text-center text-[1.8rem]">{{record.price}}</span>
+                    </template>
+                    <template v-if="column.dataIndex === 'quantity'">
+                        <span class="text-center text-[1.8rem]">x{{record.quantity}}</span>
+                    </template>
+                    <template v-if="column.dataIndex === 'total'">
+                        <span class="text-center text-[1.8rem]"
+                        >{{record.total}}đ</span>
+                    </template>
+                </template>
+            </a-table>
             <div class="flex my-[16px] mt-10">
                 <div
                     class="flex flex-col gap-6 p-5 bg-white text-[1.6rem] w-[50%] shadow-xl"
@@ -63,21 +183,34 @@ const goToOrder = () => {
                     >
                         Thông tin giao hàng
                     </h2>
-                    <input
-                        class="border-solid border p-3 rounded focus:ring-2 focus:outline-[var(--primary-color)]"
-                        type="text"
-                        placeholder="Họ tên"
-                    />
-                    <input
-                        class="border-solid border p-3 rounded focus:ring-2 focus:outline-[var(--primary-color)]"
-                        type="text"
-                        placeholder="Số điện thoại"
-                    />
-                    <input
-                        class="border-solid border p-3 rounded focus:ring-2 focus:outline-[var(--primary-color)]"
-                        type="text"
-                        placeholder="Địa chỉ"
-                    />
+                    <div>
+                        <span>Họ tên</span>
+                        <span>{{
+                            info
+                                ? info.name
+                                : ''
+                        }}
+                        </span>
+                    </div>
+                    <div>
+                        <span>Số điện thoại</span>
+                        <span>{{
+                            info
+                                ? info.phone
+                                : ''
+                        }}
+                        </span>
+                    </div>
+                    <div>
+                        <span>Địa chỉ</span>
+                        <span>{{
+                            info
+                                ? info.address
+                                : ''
+                        }}
+                        </span>
+                    </div>
+
                 </div>
                 <div
                     class="ml-auto flex flex-col gap-6 p-5 bg-white text-[1.6rem] w-[40%] shadow-xl"
@@ -89,25 +222,31 @@ const goToOrder = () => {
                     </h2>
                     <p>
                         Tổng giá:
-                        <span class="float-right">12đ</span>
+                        <span class="float-right">{{sumProduct}}đ</span>
                     </p>
                     <p>
                         Phí vận chuyển:
-                        <span class="float-right">12đ</span>
+                        <span class="float-right">{{feeShip}}đ</span>
                     </p>
                     <p class="text-[2rem] text-[var(--primary-color)]">
                         Tổng:
-                        <span class="float-right">12đ</span>
+                        <span class="float-right">{{total}}đ</span>
                     </p>
                 </div>
             </div>
             <button
                 class="float-right mt-[15px] mb-[60px] py-5 px-36 bg-[var(--primary-color)] rounded text-[2rem] text-white uppercase hover:opacity-85"
-                @click="goToOrder"
+                @click="goToPay"
             >
                 Thanh toán
             </button>
         </div>
     </div>
-    <ModalInfoAddress :show="showModal" @setShowStatus="showModal = $event" />
+    <ModalInfoAddress 
+    :show="showModal" 
+    :weight="weight"
+    :itemsPro="items"
+    @setShowStatus="showModal = $event"
+    @setInfoValue="handleInfoValue"
+    />
 </template>

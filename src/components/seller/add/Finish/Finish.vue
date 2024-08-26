@@ -66,6 +66,7 @@ const onFinish = () => {
 };
 
 const onSubmit = async () => {
+    if(!idProduct.value) return message.error('Bạn cần nhập phần thông tin cơ bản trước')
     try {
         const res = await mainServices.addAssortmentProduct({
             productId: idProduct.value,
@@ -76,6 +77,7 @@ const onSubmit = async () => {
         message.info('Success');
     } catch (err) {
         console.log(err);
+        message.error('Vui lòng nhập đúng thông tin')
     }
 };
 
@@ -251,7 +253,7 @@ watch(
                         >
                             <input
                                 v-model="valueCombi[index].price"
-                                type="text"
+                                type="number"
                                 placeholder="Nhập vào"
                                 class="w-full h-[32px] px-[12px] rounded text-[1.6rem]"
                                 style="border: 1px solid #e5e5e5"
@@ -263,7 +265,7 @@ watch(
                         >
                             <input
                                 v-model="valueCombi[index].quantity"
-                                type="text"
+                                type="number"
                                 placeholder="Nhập vào"
                                 class="w-full h-[32px] px-[12px] rounded text-[1.6rem]"
                                 style="border: 1px solid #e5e5e5"
@@ -274,8 +276,8 @@ watch(
             </div>
         </div>
     </div>
-    <a-button type="primary" @click="onSubmit" class="mt-[24px] float-end"
-        >Submit</a-button
+    <a-button type="primary" @click="onSubmit" class="uppercase mt-[24px] float-end mr-[192px]"
+        >Add</a-button
     >
 </template>
 

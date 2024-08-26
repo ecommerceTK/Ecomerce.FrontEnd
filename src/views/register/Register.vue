@@ -138,7 +138,16 @@ const handleChangePassword = () => {
             layout="vertical"
         >
             <div>
-                <a-form-item label="Email" name="email" class="mb-0">
+                <a-form-item 
+                name="email" 
+                class="mb-0"
+                >
+                    <template #label>
+                        <div>
+                            <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                            Email
+                        </div>
+                    </template>
                     <a-input
                         v-model:value="info.email"
                         @change="handleChangeEmail"
@@ -151,7 +160,16 @@ const handleChangePassword = () => {
                 </span>
             </div>
             <div>
-                <a-form-item label="Password" name="password" class="mb-0">
+                <a-form-item 
+                name="password" 
+                class="mb-0"
+                >
+                    <template #label>
+                        <div>
+                            <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                            Password
+                        </div>
+                    </template>
                     <a-input-password
                         v-model:value="info.password"
                         @change="handleChangePassword"

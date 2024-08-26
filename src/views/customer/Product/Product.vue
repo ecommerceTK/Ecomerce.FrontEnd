@@ -10,8 +10,9 @@ console.log(productId);
 </script>
 
 <template>
-    <ProductDetail />
-    <div class="mt-[20px]">
+    <ProductDetail/>
+
+    <!-- <div class="mt-[20px]">
         <h2 class="text-[24px] font-bold">Khách hàng đánh giá</h2>
         <div
             class="mb-[20px] ml-[5%] p-5 bg-white rounded w-max"
@@ -76,7 +77,7 @@ console.log(productId);
             </div>
         </div>
         <CommentItem v-for="n in 2" :key="n" />
-    </div>
+    </div> -->
 </template>
 
 //172.16.90.61:8080

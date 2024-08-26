@@ -1,14 +1,27 @@
 <script setup>
 import { message } from 'ant-design-vue';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue';
 import authServices from '../../domain/authServices';
 import _ from 'lodash';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import mainServices from '../../domain/mainServices';
 
 const router = useRouter();
+const route=useRoute();
 const options1 = ref(null);
 const options2 = ref(null);
 const options3 = ref(null);
+const status=ref(false);
+
+const emit = defineEmits(['setShowStatus']);
+const props = defineProps({
+    show: Boolean,
+    weight: Number,
+    itemsPro: Array,
+})
+const {show, weight, itemsPro} = toRefs(props);
+
+console.log(show, weight, itemsPro);
 
 const result = reactive({
     name: null,
@@ -72,6 +85,32 @@ const handleSelectXa = async () => {
     }
 };
 
+const getTotalCost = async () => {
+    const selectedOption1 = options1.value.find(option => option.value === result.tinh);
+    const selectedOption2 = options2.value.find(option => option.value === result.quan);
+    const selectedOption3 = options3.value.find(option => option.value === result.xa);
+
+    const label1 = selectedOption1 ? selectedOption1.label : 'Label not found';
+    const label2 = selectedOption2 ? selectedOption2.label : 'Label not found';
+    const label3 = selectedOption3 ? selectedOption3.label : 'Label not found';
+
+    const addressInfo = `${result.detail}, ${label1}, ${label2}, ${label3}`;
+    try {
+        const res = await mainServices.getTotalCost(route.query.orderId, {
+            to_district_id: result.quan,
+        });
+        status.value=true;
+        console.log(res);
+        emit('setInfoValue', { name: result.name, phone: result.phone, address: addressInfo });
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+const handleCloseModal = () => {
+    emit('setShowStatus', false);
+};
+
 onMounted(async () => {
     const resultTinh = await fetchAddress(0);
     options1.value = _.map(resultTinh, item => ({
@@ -100,9 +139,6 @@ onMounted(async () => {
                 <a-form-item
                     label="Họ tên"
                     name="name"
-                    :rules="[
-                        { required: true, message: 'Please input your name!' },
-                    ]"
                 >
                     <a-input v-model:value="result.name" />
                 </a-form-item>
@@ -111,9 +147,6 @@ onMounted(async () => {
                     class="mt-[-6px]"
                     label="Số điện thoại"
                     name="phone"
-                    :rules="[
-                        { required: true, message: 'Please input your phone!' },
-                    ]"
                 >
                     <a-input v-model:value="result.phone" />
                 </a-form-item>
@@ -158,12 +191,6 @@ onMounted(async () => {
                 <a-form-item
                     label="Địa chỉ chi tiết"
                     name="address"
-                    :rules="[
-                        {
-                            required: true,
-                            message: 'Địa chỉ chi tiết là bắt buộc',
-                        },
-                    ]"
                 >
                     <a-textarea
                         class="placeholder-custom"
@@ -176,7 +203,7 @@ onMounted(async () => {
                     :wrapper-col="{ offset: 8, span: 16 }"
                     class="text-right"
                 >
-                    <a-button v-if="!check" type="primary" @click="onSubmit"
+                    <a-button type="primary" @click="getTotalCost"
                         >Submit</a-button
                     >
                 </a-form-item>

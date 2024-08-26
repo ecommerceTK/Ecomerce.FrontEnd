@@ -6,7 +6,7 @@ const { token, refreshToken, setToken, clearToken } = useAuthToken();
 const { clearUser } = useAuthUser();
 
 const httpApi = axios.create({
-    baseURL: 'https://922c-210-245-51-162.ngrok-free.app/api/v1/',
+    baseURL: 'https://ccd0-222-254-21-29.ngrok-free.app/api/v1/',
     headers: {
         'ngrok-skip-browser-warning': '1',
         Accept: 'application/json',

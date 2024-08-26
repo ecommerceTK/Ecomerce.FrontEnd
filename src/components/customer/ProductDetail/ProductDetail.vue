@@ -5,7 +5,10 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import mainServices from '../../../domain/mainServices';
+import { defaultProduct } from '../../../assets';
+import { useAuthToken } from '../../../storage/useAuthToken';
 
+const { token } = useAuthToken();
 const productImg = ref(null);
 const currentImg = ref(null);
 const isExpanded = ref(false);
@@ -40,6 +43,7 @@ const toggleContent = () => {
 };
 
 const goToCart = async () => {
+    if(!token.value) return message.error('Bạn chưa đăng nhập');
     if (!valueid) return message.error('Bạn chưa chọn phân loại');
     const data = {
         product_id: product.value.product_id,
@@ -63,11 +67,16 @@ const goToCart = async () => {
 const handleValue = (name, value) => {
     console.log(name, value);
 
-    valueid.value = {
-        ...valueid.value, // Giữ lại các thuộc tính cũ
-        [name]: value, // Thêm hoặc cập nhật thuộc tính mới
-    };
+    if (valueid.value[name]) {
+        delete valueid.value[name];
+    } else {
+        valueid.value = {
+            ...valueid.value,
+            [name]: value,
+        };
+    }
     console.log(valueid.value);
+    
 };
 
 onMounted(() => {
@@ -80,7 +89,7 @@ onMounted(() => {
         <div
             class="w-[450px] border-solid border border-[var(--primary-color)] h-min"
         >
-            <img class="w-[100%]" :src="`http://${currentImg}`" alt="" />
+            <img class="w-[100%] " :src="`http://${currentImg}`" alt="" />
             <Carousel :items-to-show="2.5" :wrap-around="true">
                 <Slide
                     v-for="img in productImg"
@@ -99,7 +108,7 @@ onMounted(() => {
             </Carousel>
         </div>
         <div
-            class="bg-[#fff] p-6 rounded shadow flex-1 flex flex-col max-w-[60%]"
+            class="bg-[#fff] p-6 rounded shadow flex-1 flex flex-col max-w-[60%] max-h-[70%]"
         >
             <div class="mb-20">
                 <h1 class="text-[2.5rem] font-medium">
@@ -118,7 +127,20 @@ onMounted(() => {
                 </div>
                 <span class="text-[3rem]">{{ product?.price }}đ</span>
             </div>
-            <div class="center mb-20" v-if="assortment.length > 0">
+            <div>
+                <h3 class="text-[2rem]">Mô tả</h3>
+                <p
+                    class="desc text-[#796e6e] text-[16px] leading-snug"
+                    :class="{ expanded: isExpanded }"
+                >
+                    {{ product?.description }}
+                </p>
+            </div>
+            <div class="text-[1.8rem] mt-[20px]">
+                <span>Cân nặng:</span>
+                <span class="ml-3 text-[#796e6e]">{{product.weight}}kg</span>
+            </div>
+            <div class="center mt-20" v-if="assortment.length > 0">
                 <h3 class="text-[18px] font-semibold mb-6">Phân loại</h3>
                 <div
                     v-for="ass in assortment"
@@ -176,7 +198,7 @@ onMounted(() => {
             </div>
         </div>
     </div>
-    <div class="max-w-[70%] my-[12px]">
+    <!-- <div class="max-w-[70%] my-[12px]">
         <h3 class="text-[2rem]">Mô tả</h3>
         <p
             class="desc text-[#796e6e] text-[16px] leading-snug"
@@ -187,7 +209,7 @@ onMounted(() => {
         <button @click="toggleContent" class="text-[16px] text-[#8f8a8a]">
             {{ isExpanded ? 'Thu gọn' : 'Xem thêm' }}
         </button>
-    </div>
+    </div> -->
 </template>
 <style scoped>
 .separate::after {

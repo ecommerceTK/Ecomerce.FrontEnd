@@ -1,5 +1,6 @@
 <script setup>
 import { ref, toRefs } from 'vue';
+import { defaultProduct } from '../../../assets';
 
 const props = defineProps({
     product: Object,
@@ -21,7 +22,7 @@ const { product } = toRefs(props);
             <div class="relative z-0 w-full pt-[100%]">
                 <img
                     class="inset-y-0 w-full h-full pointer-events-none object-cover absolute"
-                    :src="`http://${product.imageUrl}`"
+                    :src="product.imageUrl.includes('null')?defaultProduct:`http://${product.imageUrl}`"
                     alt=""
                 />
             </div>
@@ -37,8 +38,8 @@ const { product } = toRefs(props);
                     <div
                         class="flex items-baseline text-[var(--primary-color)] font-medium text-[1.8rem]"
                     >
-                        <span class="text-[12px] mr-px">đ</span>
                         {{ product.price }}
+                        <span class="text-[12px] mr-px">đ</span>
                     </div>
                     <span
                         class="truncate text-black text-[1.3rem] min-h-4 flex-shrink-1 ml-auto"

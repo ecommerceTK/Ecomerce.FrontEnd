@@ -38,6 +38,11 @@ const router = createRouter({
                     component: () => import('../views/customer/Order'),
                 },
                 {
+                    path: '/verify',
+                    name: 'Verify',
+                    component: () => import('../views/customer/Verify'),
+                },
+                {
                     path: '/changepassword',
                     name: 'ChangePassword',
                     component: () => import('../views/customer/ChangePassword'),
@@ -104,6 +109,11 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             name: 'NotFound',
             component: () => import('../views/NotFound'),
+        },
+        {
+            path: '/failPayment',
+            name: 'FailPayment',
+            component: () => import('../views/customer/FailPayment'),
         },
     ],
 });

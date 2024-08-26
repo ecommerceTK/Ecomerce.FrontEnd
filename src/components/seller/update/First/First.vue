@@ -121,7 +121,7 @@ onMounted(() => {
             </a-form-item>
 
             <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-                <a-button class="float-right" type="primary" @click="onSubmit"
+                <a-button class="uppercase float-right" type="primary" @click="onSubmit"
                     >Cập nhật</a-button
                 >
             </a-form-item>

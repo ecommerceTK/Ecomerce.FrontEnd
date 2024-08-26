@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import OrderItem from '../../../components/seller/OrderItem';
 import mainServices from '../../../domain/mainServices';
+import { defaultProduct } from '../../../assets';
 
 const activeKey = ref('1');
 const slcl = ref(6);
@@ -11,6 +11,62 @@ const pageSize = ref(30);
 const current = ref(1);
 const total = ref(null);
 
+const columns = [
+  {
+    title: 'Sản phẩm',
+    dataIndex: 'name',
+    key: 'name',
+    width: '48%',
+    ellipsis: true,
+  },
+  {
+    title: 'Tổng đơn hàng',
+    dataIndex: 'total',
+    key: 'total',
+    colSpan: '16%', 
+    align:'center',
+  },
+  {
+    title: 'Trạng thái',
+    dataIndex: 'status',
+    key: 'status',
+    colSpan: '16%', 
+    align:'center',
+  },
+  {
+    title: 'Thao tác',
+    dataIndex: 'tt',
+    key: 'tt',
+    colSpan: '16%', 
+    align:'center',
+  }
+];
+const data = [
+    {
+        key: 1,
+        imgUrl: defaultProduct,
+        name: 'Phụ kiện công',
+        quantity: 2,
+        total: 123,
+        status: 'Đã giao'
+    },
+    {
+        key: 2,
+        imgUrl: defaultProduct,
+        name: 'Phụ kiện công',
+        quantity: 2,
+        total: 123,
+        status: 'Đã giao'
+    },
+    {
+        key: 3,
+        imgUrl: defaultProduct,
+        name: 'Phụ kiện công',
+        quantity: 2,
+        total: 123,
+        status: 'Đã giao'
+    }
+];
 const getOrderSeller = () => {};
 
 const onChangePage = page => {
@@ -29,45 +85,60 @@ onMounted(() => {
 <template>
     <div class="mt-6 mx-6 flex-1 list">
         <h2 class="text-[2.5rem] my-12 font-medium">Đơn hàng</h2>
+        
         <div
             class="bg-[#fff] p-[24px] rounded"
             style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
         >
             <a-tabs v-model:activeKey="activeKey" class="text-[1.6rem]">
                 <a-tab-pane key="1" tab="Tất cả">
-                    <div class="mb-[24px]">
-                        <h3 class="text-[2.5rem] font-semibold m-0">
-                            0 Đơn hàng
-                        </h3>
-                    </div>
-                    <a-input-search
-                        class="searchInput max-w-[336px] mb-[24px] h-[38px]"
-                        placeholder="Tìm đơn hàng"
-                        enter-button
-                        @search="onSearch"
-                    />
-                    <div style="border: 1px solid #e5e5e5">
-                        <div
-                            class="flex items-center bg-[#f6f6f6] text-[#888] text-[16px] h-[86px] mb-[12px] px-[20px] pb-[36px] shadow-sm"
-                        >
-                            <span class="text-[#000c] w-[46%]"> Sản phẩm </span>
-                            <span class="w-[16%] text-center"
-                                >Tổng đơn hàng</span
-                            >
-                            <span class="w-[16%] text-center">Trạng thái</span>
-                            <span class="w-[16%] text-center">Thao tác</span>
-                        </div>
-                        <div v-if="isLoading">Loading...</div>
-                        <OrderItem v-for="n in 10" :key="n" />
-                        <!-- <a-pagination
-                            class="text-center py-6 text-[1.6rem]"
-                            v-model:current="current"
-                            v-model:pageSize="pageSize"
-                            @change="onChangePage"
-                            :total="total"
-                            :show-size-changer="false"
-                        /> -->
-                    </div>
+                     <a-table 
+                    v-if="data.length>0"
+                    class="mt-[48px] shadow-md" 
+                    :columns="columns" 
+                    :data-source="data"
+                    :pagination="false"
+                    >
+                        <template #headerCell="{ column }">
+                            <div class="text-[2rem]">{{ column.title }}</div>
+                        </template>
+                        <template #bodyCell="{ column, record }">
+                            <template v-if="column.dataIndex === 'name'">
+                                <p class="text-[1.6rem]">
+                                    Người nhận:
+                                    <span class="font-bold">Nguyễn văn a</span>
+                                </p>
+                               <div class="flex items-center justify-between mb-[36px]">
+                                    <div class="flex items-center">
+                                        <img
+                                            class="w-[80px] object-cover cursor-pointer"
+                                            src="https://product.hstatic.net/1000271846/product/pants-black-01_c01c2b917d1b445586fa7f8dd8a1295e_master.jpg"
+                                            alt=""
+                                        />
+                                        <p
+                                            class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
+                                        >
+                                            {{record.name}}
+                                            <span class="text-[#888]">Mã đơn hàng: {{record.key}}</span>
+                                        </p>
+                                    </div>
+                                    <span>x{{record.quantity}}</span>
+                                </div>
+                            </template>
+                            <template v-if="column.dataIndex === 'total'">
+                                <span class="text-[1.8rem]">{{record.total}}đ</span>
+                            </template>
+                            <template v-if="column.dataIndex === 'status'">
+                                <span class="text-[1.8rem]">{{record.status}}</span>
+                            </template>
+                            <template v-if="column.dataIndex === 'tt'">
+                                 <router-link
+                                    :to="{ name: 'SellerOrderDetail', params: { id: 113 } }"
+                                    >Xem chi tiết</router-link
+                                >
+                            </template>
+                        </template>
+                    </a-table>
                 </a-tab-pane>
                 <a-tab-pane key="2" force-render>
                     <template v-slot:tab> Đang giao </template>

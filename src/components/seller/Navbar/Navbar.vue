@@ -2,10 +2,26 @@
 import { useRouter } from 'vue-router';
 import { defaultAvatar } from '../../../assets';
 import { useAuthUser } from '../../../storage/useAuthUser';
+import {useAuthToken} from '../../../storage/useAuthToken';
 
+const {token, clearToken} = useAuthToken();
 const { userStore, clearUser } = useAuthUser();
 const user = JSON.parse(userStore.value);
 const router = useRouter();
+
+const logout = async () => {
+    //console.log({token});
+    try {
+        const res = await authServices.logOut({ token:token.value });
+        clearToken();
+        clearUser();
+        message.info('Đăng xuất thành công');
+        router.push({name: 'Login'});
+    } catch (err) {
+        console.log(err);
+        // message.error(err.response.data.message);
+    }
+};
 </script>
 
 <template>
@@ -34,9 +50,7 @@ const router = useRouter();
                             alt=""
                             class="w-[38px] rounded-full"
                         />
-                        <span class="text-[1.8rem]">{{
-                            user?.username.split('@')[0]
-                        }}</span>
+                        <span class="text-[1.8rem]">{{user?.username.split('@')[0]}}</span>
                     </a-button>
                     <template #overlay>
                         <a-menu>
@@ -46,7 +60,12 @@ const router = useRouter();
                                 >
                             </a-menu-item>
                             <a-menu-item>
-                                <span @click="onLogout">Log out</span>
+                                <router-link :to="{ name: 'Home' }"
+                                    >Trang người dùng</router-link
+                                >
+                            </a-menu-item>
+                            <a-menu-item>
+                                <span @click="logout">Log out</span>
                             </a-menu-item>
                         </a-menu>
                     </template>

@@ -35,6 +35,9 @@ export default {
             },
         });
     },
+    getProductSoldOutSeller() {
+        return http.get('product/get-product-sold-out');
+    },
     getSearchProduct(value) {
         return http.get('search', {
             params: {
@@ -114,4 +117,60 @@ export default {
     getItemCart() {
         return http.get('cart/all');
     },
+    deleteCartItem(data) {
+        return http.delete('cart/remove-items',{
+            data:data,
+        });
+    },
+    updateCartItem(data) {
+        return http.put('cart/update-items',data);
+    },
+    addToOrder(data) {
+        return http.post('order/addtoOrder',data);
+    },
+    getPreOrder(id) {
+        return http.get(`order/preOrder/${id}`);
+    },
+    checkOrder(id) {
+        return http.get('order/status',{
+            params: {
+                orderId:id,
+            }
+        })
+    },
+    getTotalCost(id,data) {
+        return http.post('shipping/totalcost',data,{
+            params: {
+                shippingContribute:'GHN',
+                orderId:id,
+            }
+        })
+    },
+    payment(id) {
+        return http.post('payments2/create_payment_url',{
+            "vnp_version": null,
+            "vnp_command": null,
+            "vnp_tmn_code": null,
+            "vnp_amount": 5841000,
+            "vnp_bank_code": null,
+            "vnp_create_date": null,
+            "vnp_curr_code": null,
+            "vnp_ip_addr": null,
+            "vnp_locale": null,
+            "vnp_order_info": null,
+            "vnp_order_type": null,
+            "vnp_return_url": null,
+            "vnp_expire_date": null,
+            "vnp_txn_ref": null,
+            "vnp_secure_hash": null
+        }
+        ,{
+            params: {
+                orderId:id,
+            }
+        })
+    },
+    getAllOrderItem() {
+        return http.get('order/preOrder')
+    }
 };

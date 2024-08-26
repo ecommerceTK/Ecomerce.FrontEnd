@@ -1,5 +1,4 @@
 <script setup>
-import CategoryItem from '../../../components/customer/CategoryItem';
 import CategoryLayout from '../../../components/customer/CategoryLayout';
 import { useRouter } from 'vue-router';
 
@@ -8,7 +7,6 @@ const router = useRouter();
 </script>
 <template>
     <div class="home">
-        <!-- <CategoryItem /> -->
         <CategoryLayout />
     </div>
 </template>

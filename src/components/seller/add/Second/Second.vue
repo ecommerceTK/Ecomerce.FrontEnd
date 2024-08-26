@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import { useAuthToken } from '../../../../storage/useAuthToken';
 import mainServices from '../../../../domain/mainServices';
 import axios from 'axios';
+import { message } from 'ant-design-vue';
 
 const { token } = useAuthToken();
 const img = ref([]);
@@ -106,10 +107,11 @@ const uploadFileToSignedUrl = async (url, file) => {
     }
 };
 
-const handleUpload = async ({ onSuccess, file }) => {
+const handleUpload = async ({ onSuccess, onError, file }) => {
+    if(!idProduct.value) return message.error('Bạn cần nhập phần thông tin cơ bản trước')
     await getSignedUrl();
     await uploadFileToSignedUrl(result.value.url, file);
-
+    file.name=result.value.fileName;
     try {
         const response = await mainServices.addImgProduct(
             idProduct.value,
@@ -119,6 +121,7 @@ const handleUpload = async ({ onSuccess, file }) => {
         onSuccess(response);
     } catch (error) {
         console.log(error);
+        onError(error);
     }
 };
 
@@ -143,7 +146,7 @@ const handleRemove = async file => {
     <a-form-item
         label="Hình ảnh"
         name="img"
-        :rules="[{ required: true, message: 'Please input your productImg!' }]"
+        :rules="[{ required: true, message: 'Bạn cần thêm ảnh cho sản phẩm' }]"
     >
         <div class="clearfix">
             <a-upload

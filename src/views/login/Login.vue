@@ -145,7 +145,16 @@ const onModal = () => {
           class="border-solid border border-[#ccc] p-3 rounded w-full focus:border-none focus:ring-2 focus:outline-[var(--primary-color)]"
           v-model="info.username"
         /> -->
-                <a-form-item label="Username" name="username" class="mb-0">
+                <a-form-item 
+                name="username"
+                class="mb-0"
+                >
+                    <template #label>
+                        <div>
+                            <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                            Username
+                        </div>
+                    </template>
                     <a-input
                         v-model:value="info.username"
                         @change="handleChangeUsername"
@@ -169,7 +178,16 @@ const onModal = () => {
           class="border-solid border border-[#ccc] p-3 rounded w-full focus:border-none focus:ring-2 focus:outline-[var(--primary-color)]"
           v-model="info.password"
         /> -->
-                <a-form-item label="Password" name="password" class="mb-0">
+                <a-form-item 
+                name="password" 
+                class="mb-0"
+                >
+                    <template #label>
+                        <div>
+                            <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                            Password
+                        </div>
+                    </template>
                     <a-input-password
                         v-model:value="info.password"
                         @change="handleChangePassword"

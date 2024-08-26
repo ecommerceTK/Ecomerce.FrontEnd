@@ -174,18 +174,20 @@ onMounted(async () => {
             autocomplete="off"
         >
             <a-form-item
-                label="Tên shop"
                 name="shopname"
-                :rules="[
-                    { required: true, message: 'Please input your shopname!' },
-                ]"
             >
+                <template #label>
+                    <div>
+                        <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                        Tên shop
+                    </div>
+                </template>
                 <a-input v-model:value="result.shopname" />
             </a-form-item>
 
             <div class="flex mb-[24px] ml-[25%]">
-                <p class="w-[70px] mr-[9px]">
-                    <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                <p class="w-[70px] mr-[23px]">
+                    <span class="mr-[3px] ml-[12px] text-[#ee4d2d]">*</span>
                     Địa chỉ:
                 </p>
 
@@ -220,12 +222,14 @@ onMounted(async () => {
             </div>
 
             <a-form-item
-                label="Địa chỉ chi tiết"
                 name="shopname"
-                :rules="[
-                    { required: true, message: 'Địa chỉ chi tiết là bắt buộc' },
-                ]"
             >
+                <template #label>
+                    <div>
+                        <span class="mr-[3px] text-[#ee4d2d]">*</span>
+                        Địa chỉ chi tiết
+                    </div>
+                </template>
                 <a-textarea
                     v-model:value="result.detail"
                     placeholder="Số nhà, tên đường, vv"

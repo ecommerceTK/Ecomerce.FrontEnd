@@ -37,10 +37,11 @@ const onSubmit = async () => {
         //console.log(res);
         idPro.value = res.data.result.id;
         emit('updateId', idPro.value);
-        message.info('Add info success');
+        message.success('Add info success');
         props.next();
     } catch (err) {
         console.log(err);
+        message.error('Vui lòng nhập đầy đủ thông tin');
     }
 };
 
@@ -64,9 +65,6 @@ const handleOpenModal = () => {
         <a-form-item
             label="Tên sản phẩm"
             name="name"
-            :rules="[
-                { required: true, message: 'Please input your productName!' },
-            ]"
         >
             <a-input v-model:value="formState.name" placeholder="Nhập vào" />
         </a-form-item>
@@ -74,9 +72,6 @@ const handleOpenModal = () => {
         <a-form-item
             label="Cân nặng"
             name="weight"
-            :rules="[
-                { required: true, message: 'Please input your productWeight!' },
-            ]"
         >
             <a-input v-model:value="formState.weight" placeholder="Nhập vào" />
         </a-form-item>
@@ -113,12 +108,6 @@ const handleOpenModal = () => {
         <a-form-item
             label="Mô tả"
             name="desc"
-            :rules="[
-                {
-                    required: true,
-                    message: 'Please input your productDescription!',
-                },
-            ]"
         >
             <a-textarea
                 v-model:value="formState.description"
@@ -128,7 +117,7 @@ const handleOpenModal = () => {
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-            <a-button type="primary" @click="onSubmit">Submit</a-button>
+            <a-button class="float-right uppercase" type="primary" @click="onSubmit" >Add</a-button>
         </a-form-item>
     </a-form>
 

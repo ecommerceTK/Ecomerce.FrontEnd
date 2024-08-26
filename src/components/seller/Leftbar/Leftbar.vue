@@ -1,10 +1,10 @@
 <script setup>
-import { reactive, watch, h } from 'vue';
+import { reactive, watch, h, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const state = reactive({
-    selectedKeys: [''],
+    selectedKeys: ['order'],
     openKeys: ['product'],
     preOpenKeys: ['product'],
 });

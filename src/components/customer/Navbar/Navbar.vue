@@ -1,22 +1,33 @@
 <script setup>
 import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons-vue';
-import { ref, toRefs, watch } from 'vue';
+import { onMounted, ref, toRefs, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import { defaultAvatar } from '../../../assets';
 import authServices from '../../../domain/authServices';
-import { useEventBus } from '@vueuse/core';
 import { useAuthToken } from '../../../storage/useAuthToken';
 import { useAuthUser } from '../../../storage/useAuthUser';
 import { useRoute, useRouter } from 'vue-router';
+import mainServices from '../../../domain/mainServices';
 
 const { token, clearToken } = useAuthToken();
 const { userStore, clearUser } = useAuthUser();
-const searchBus = useEventBus('perform-search');
 const user = JSON.parse(userStore.value);
 const route = useRoute();
 const router = useRouter();
 const searchValue = ref('');
 const searchInput = ref(null);
+
+const cartItemCount = ref(0);
+
+const getItemCart = async () => {
+    try {
+        const res = await mainServices.getItemCart();
+        console.log(res);  
+        cartItemCount.value = res.data?.result.length;
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 const goToSellerPage = () => {
     if (token.value) {
@@ -29,10 +40,17 @@ const goToSellerPage = () => {
     }
 };
 
+const goToCart = () => {
+    if(token.value) {
+        return router.push({ name: 'Cart' });
+    }
+    return message.error('Bạn chưa đăng nhập');
+}
+
 const logout = async () => {
     //console.log({token});
     try {
-        const res = await authServices.logOut({ token });
+        const res = await authServices.logOut({ token:token.value });
         clearToken();
         clearUser();
         message.info('Đăng xuất thành công');
@@ -67,6 +85,9 @@ const handleSearch = () => {
         }
     }
 };
+onMounted(() => {
+    getItemCart();
+})
 </script>
 <template>
     <header
@@ -74,14 +95,13 @@ const handleSearch = () => {
     >
         <nav class="flex justify-between">
             <ul>
-                <li class="separate" @click="goToSellerPage">Trang bán hàng</li>
-                <li>Trang Admin</li>
+                <li class="text-[#e4d5d5]" @click="goToSellerPage">Trang bán hàng</li>
             </ul>
             <ul v-if="!userStore">
-                <li class="separate">
+                <li class="separate text-[#e4d5d5]">
                     <router-link to="/login">Đăng nhập</router-link>
                 </li>
-                <li>
+                <li class="text-[#e4d5d5]" >
                     <router-link to="/register">Đăng kí</router-link>
                 </li>
             </ul>
@@ -131,7 +151,7 @@ const handleSearch = () => {
                 <template #overlay>
                     <a-menu>
                         <a-menu-item>
-                            <a href="javascript:;">Order</a>
+                            <router-link :to="{ name: 'Order' }">Order</router-link>
                         </a-menu-item>
                         <a-menu-item>
                             <router-link :to="{ name: 'ChangePassword' }"
@@ -169,12 +189,10 @@ const handleSearch = () => {
                 </div>
             </div>
             <div class="relative mr-[86px] z-0">
-                <router-link to="/cart">
-                    <ShoppingCartOutlined class="carticon" />
-                </router-link>
+                <ShoppingCartOutlined class="carticon" @click="goToCart"/>
                 <span
                     class="absolute top-[-8px] right-[-8px] text-white text-xl px-3 py-1 bg-[var(--primary-color)] rounded-full"
-                    >3</span
+                    >{{cartItemCount}}</span
                 >
             </div>
         </div>

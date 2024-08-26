@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import {message} from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 import { useEventBus } from '@vueuse/core';
 import mainServices from '../../../domain/mainServices';
@@ -49,6 +50,7 @@ const fetchSearchOrderProduct = async () => {
 };
 
 const fetchSearchPriceProduct = async () => {
+    if(min.value >= max.value) return message.error('Vui lòng nhập đúng');
     try {
         const res = await mainServices.getSearchPriceProduct(
             route.query.q,
@@ -95,13 +97,19 @@ const onChangePage = page => {
 };
 
 onMounted(() => {
+    fetchSearchProducts(route.query.q); 
     watch([activeSearchType, order, current], fetchProducts, {
         immediate: true,
     });
     searchBus.on(query => {
         fetchSearchProducts(query);
     });
-    fetchSearchProducts(route.query.q);
+    watch(
+        () => route.query.q, 
+        (newQuery) => {
+            fetchSearchProducts(newQuery); 
+        }
+    );
 });
 </script>
 

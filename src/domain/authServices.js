@@ -18,8 +18,8 @@ export default {
     getUser() {
         return http.get('user/my-info');
     },
-    logOut(token) {
-        return http.post('auth/logout', token);
+    logOut(data) {
+        return http.post('auth/logout', data);
     },
     changePassword(data) {
         return http.put('auth/password/change-password', data);
