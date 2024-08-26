@@ -12,34 +12,34 @@ const current = ref(1);
 const total = ref(null);
 
 const columns = [
-  {
-    title: 'Sản phẩm',
-    dataIndex: 'name',
-    key: 'name',
-    width: '48%',
-    ellipsis: true,
-  },
-  {
-    title: 'Tổng đơn hàng',
-    dataIndex: 'total',
-    key: 'total',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Trạng thái',
-    dataIndex: 'status',
-    key: 'status',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Thao tác',
-    dataIndex: 'tt',
-    key: 'tt',
-    colSpan: '16%', 
-    align:'center',
-  }
+    {
+        title: 'Sản phẩm',
+        dataIndex: 'name',
+        key: 'name',
+        width: '48%',
+        ellipsis: true,
+    },
+    {
+        title: 'Tổng đơn hàng',
+        dataIndex: 'total',
+        key: 'total',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        key: 'status',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Thao tác',
+        dataIndex: 'tt',
+        key: 'tt',
+        colSpan: '16%',
+        align: 'center',
+    },
 ];
 const data = [
     {
@@ -48,7 +48,7 @@ const data = [
         name: 'Phụ kiện công',
         quantity: 2,
         total: 123,
-        status: 'Đã giao'
+        status: 'Đã giao',
     },
     {
         key: 2,
@@ -56,7 +56,7 @@ const data = [
         name: 'Phụ kiện công',
         quantity: 2,
         total: 123,
-        status: 'Đã giao'
+        status: 'Đã giao',
     },
     {
         key: 3,
@@ -64,8 +64,8 @@ const data = [
         name: 'Phụ kiện công',
         quantity: 2,
         total: 123,
-        status: 'Đã giao'
-    }
+        status: 'Đã giao',
+    },
 ];
 const getOrderSeller = () => {};
 
@@ -85,19 +85,19 @@ onMounted(() => {
 <template>
     <div class="mt-6 mx-6 flex-1 list">
         <h2 class="text-[2.5rem] my-12 font-medium">Đơn hàng</h2>
-        
+
         <div
             class="bg-[#fff] p-[24px] rounded"
             style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
         >
             <a-tabs v-model:activeKey="activeKey" class="text-[1.6rem]">
                 <a-tab-pane key="1" tab="Tất cả">
-                     <a-table 
-                    v-if="data.length>0"
-                    class="mt-[48px] shadow-md" 
-                    :columns="columns" 
-                    :data-source="data"
-                    :pagination="false"
+                    <a-table
+                        v-if="data.length > 0"
+                        class="mt-[48px] shadow-md"
+                        :columns="columns"
+                        :data-source="data"
+                        :pagination="false"
                     >
                         <template #headerCell="{ column }">
                             <div class="text-[2rem]">{{ column.title }}</div>
@@ -108,7 +108,9 @@ onMounted(() => {
                                     Người nhận:
                                     <span class="font-bold">Nguyễn văn a</span>
                                 </p>
-                               <div class="flex items-center justify-between mb-[36px]">
+                                <div
+                                    class="flex items-center justify-between mb-[36px]"
+                                >
                                     <div class="flex items-center">
                                         <img
                                             class="w-[80px] object-cover cursor-pointer"
@@ -118,22 +120,32 @@ onMounted(() => {
                                         <p
                                             class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
                                         >
-                                            {{record.name}}
-                                            <span class="text-[#888]">Mã đơn hàng: {{record.key}}</span>
+                                            {{ record.name }}
+                                            <span class="text-[#888]"
+                                                >Mã đơn hàng:
+                                                {{ record.key }}</span
+                                            >
                                         </p>
                                     </div>
-                                    <span>x{{record.quantity}}</span>
+                                    <span>x{{ record.quantity }}</span>
                                 </div>
                             </template>
                             <template v-if="column.dataIndex === 'total'">
-                                <span class="text-[1.8rem]">{{record.total}}đ</span>
+                                <span class="text-[1.8rem]"
+                                    >{{ record.total }}đ</span
+                                >
                             </template>
                             <template v-if="column.dataIndex === 'status'">
-                                <span class="text-[1.8rem]">{{record.status}}</span>
+                                <span class="text-[1.8rem]">{{
+                                    record.status
+                                }}</span>
                             </template>
                             <template v-if="column.dataIndex === 'tt'">
-                                 <router-link
-                                    :to="{ name: 'SellerOrderDetail', params: { id: 113 } }"
+                                <router-link
+                                    :to="{
+                                        name: 'SellerOrderDetail',
+                                        params: { id: 113 },
+                                    }"
                                     >Xem chi tiết</router-link
                                 >
                             </template>

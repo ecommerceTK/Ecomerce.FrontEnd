@@ -1,5 +1,11 @@
 <script setup>
-import { ShoppingFilled , DeleteFilled, MinusOutlined, PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import {
+    ShoppingFilled,
+    DeleteFilled,
+    MinusOutlined,
+    PlusOutlined,
+    LoadingOutlined,
+} from '@ant-design/icons-vue';
 import { h } from 'vue';
 import { onMounted, reactive, ref, watch, computed, unref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -15,42 +21,42 @@ const listOrderProducts = ref([]);
 const showLoading = ref(false);
 const cartItemCount = ref(0);
 const indicator = h(LoadingOutlined, {
-  style: {
-    fontSize: '24px',
-  },
-  spin: true,
+    style: {
+        fontSize: '24px',
+    },
+    spin: true,
 });
 
 const columns = [
-  {
-    title: 'Sản phẩm',
-    dataIndex: 'name',
-    width: '46%', 
-  },
-  {
-    title: 'Đơn giá',
-    dataIndex: 'price',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Số lượng',
-    dataIndex: 'quantity',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Thành tiền',
-    dataIndex: 'money',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Thao tác',
-    dataIndex: 'tt',
-    colSpan: '16%', 
-    align:'center',
-  },
+    {
+        title: 'Sản phẩm',
+        dataIndex: 'name',
+        width: '46%',
+    },
+    {
+        title: 'Đơn giá',
+        dataIndex: 'price',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Số lượng',
+        dataIndex: 'quantity',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Thành tiền',
+        dataIndex: 'money',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Thao tác',
+        dataIndex: 'tt',
+        colSpan: '16%',
+        align: 'center',
+    },
 ];
 
 const getItemCart = async () => {
@@ -64,118 +70,118 @@ const getItemCart = async () => {
     }
 };
 
-const handleDeleteCartItem = async(id) => {
-  //console.log(id);
-  try { 
-        const res = await mainServices.deleteCartItem(
-          {
+const handleDeleteCartItem = async id => {
+    //console.log(id);
+    try {
+        const res = await mainServices.deleteCartItem({
             item_ids: [
-              {
-                cart_item_id:id,
-              }
-            ]
-          }
-        );
+                {
+                    cart_item_id: id,
+                },
+            ],
+        });
         getItemCart();
     } catch (err) {
         console.log(err);
         message.error('Đã có lỗi xảy ra');
-  }
-}
+    }
+};
 
-const handleUpdateCartItem = async() => {
-  //console.log(id);
-  const countWithoutPrice = count.value.map(({ price, ...rest }) => rest);
-  try { 
-        const res = await mainServices.updateCartItem(
-          {
+const handleUpdateCartItem = async () => {
+    //console.log(id);
+    const countWithoutPrice = count.value.map(({ price, ...rest }) => rest);
+    try {
+        const res = await mainServices.updateCartItem({
             updateItems: countWithoutPrice,
-          }
-        );
+        });
     } catch (err) {
         console.log(err);
         message.error('Đã có lỗi xảy ra');
-  }
-}
-
-const updateData = () => {
-  data.value = cartItems.value.map(cartItem => ({
-    key: cartItem.id,
-    price: cartItem.price,
-    quantity: cartItem.quantity,
-    name: cartItem.name,
-    imgUrl: cartItem.imgUrl
-  }));
-
-  // console.log(cartItems);
-  // console.log(data);
-
-  count.value = cartItems.value.map(item => ({
-    cartItem_id: item.id,
-    quantity: item.quantity,
-    price: item.price,
-  }));
-}
-const total = computed(() => {
-  return count.value
-    .filter(item => listOrderProducts.value.includes(item.cartItem_id)) // Lọc các mục có id nằm trong listOrderProducts
-    .reduce((sum, item) => sum + (item.quantity * item.price), 0); // Tính tổng giá trị
-});
-
-const decline = (index) => {
-  if (count.value[index].quantity >= 1) {
-    count.value[index].quantity--;
-    handleUpdateCartItem();
-  }
+    }
 };
 
-const increase = (index) => {
-  count.value[index].quantity++;
-  handleUpdateCartItem();
+const updateData = () => {
+    data.value = cartItems.value.map(cartItem => ({
+        key: cartItem.id,
+        price: cartItem.price,
+        quantity: cartItem.quantity,
+        name: cartItem.name,
+        imgUrl: cartItem.imgUrl,
+    }));
+
+    // console.log(cartItems);
+    // console.log(data);
+
+    count.value = cartItems.value.map(item => ({
+        cartItem_id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+    }));
+};
+const total = computed(() => {
+    return count.value
+        .filter(item => listOrderProducts.value.includes(item.cartItem_id)) // Lọc các mục có id nằm trong listOrderProducts
+        .reduce((sum, item) => sum + item.quantity * item.price, 0); // Tính tổng giá trị
+});
+
+const decline = index => {
+    if (count.value[index].quantity >= 1) {
+        count.value[index].quantity--;
+        handleUpdateCartItem();
+    }
+};
+
+const increase = index => {
+    count.value[index].quantity++;
+    handleUpdateCartItem();
 };
 
 const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    listOrderProducts.value = selectedRowKeys;
-  },
-  getCheckboxProps: (record) => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
+    onChange: (selectedRowKeys, selectedRows) => {
+        //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        listOrderProducts.value = selectedRowKeys;
+    },
+    getCheckboxProps: record => ({
+        disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        name: record.name,
+    }),
 };
 
-const checkOrder = async(id) => {
-  try {
-    showLoading.value=true;
-    const res = await mainServices.checkOrder(id);
-    if(res.data.result==='Success') {
-      router.push({
-        path: '/checkout',  // Đường dẫn tới trang checkout
-        query: {            // Truyền tham số qua query
-          orderId: id,
-        }
-      });
-    } else if(res.data.result==='Failed') {
-      message.error('Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại')
-      showLoading.value=false;
-    }
-  } catch(err) {
-    console.log(err);
-    message.error('Đã có lỗi xảy ra')
-  }
-}
-
-const checkout = async() => {
-  if(total.value==0) return message.error('Bạn chưa chọn mặt hàng nào');
+const checkOrder = async id => {
     try {
-      const res = await mainServices.addToOrder({cartItemIds: listOrderProducts.value});
-      await checkOrder(res.data.result.orderId);
-    } catch(err) {
-      console.log(err);   
+        showLoading.value = true;
+        const res = await mainServices.checkOrder(id);
+        if (res.data.result === 'Success') {
+            router.push({
+                path: '/checkout', // Đường dẫn tới trang checkout
+                query: {
+                    // Truyền tham số qua query
+                    orderId: id,
+                },
+            });
+        } else if (res.data.result === 'Failed') {
+            message.error(
+                'Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại'
+            );
+            showLoading.value = false;
+        }
+    } catch (err) {
+        console.log(err);
+        message.error('Đã có lỗi xảy ra');
     }
 };
 
+const checkout = async () => {
+    if (total.value == 0) return message.error('Bạn chưa chọn mặt hàng nào');
+    try {
+        const res = await mainServices.addToOrder({
+            cartItemIds: listOrderProducts.value,
+        });
+        await checkOrder(res.data.result.orderId);
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 onMounted(() => {
     getItemCart();
@@ -222,7 +228,7 @@ onMounted(() => {
     </div> 
     -->
 
-  <div
+    <div
         v-if="cartItems.length > 0"
         class="flex items-center justify-center gap-6 text-[3.5rem] my-[60px] text-[var(--primary-color)] font-bold"
     >
@@ -230,15 +236,18 @@ onMounted(() => {
         Giỏ hàng
     </div>
 
-  <a-table class="mt-[60px]" :row-selection="rowSelection" :columns="columns" :data-source="data" :pagination="false">
-    <template #bodyCell="{ record , column, index }">
-            <div 
-            class="flex items-center"
-            v-if="column.dataIndex === 'name'"
-            >
+    <a-table
+        class="mt-[60px]"
+        :row-selection="rowSelection"
+        :columns="columns"
+        :data-source="data"
+        :pagination="false"
+    >
+        <template #bodyCell="{ record, column, index }">
+            <div class="flex items-center" v-if="column.dataIndex === 'name'">
                 <img
                     class="w-[80px] object-cover cursor-pointer"
-                    :src="record.imgUrl? record.imgUrl:defaultProduct"
+                    :src="record.imgUrl ? record.imgUrl : defaultProduct"
                     alt=""
                 />
                 <p
@@ -247,50 +256,54 @@ onMounted(() => {
                     {{ record.name }}
                 </p>
             </div>
-            <span 
-            class=" text-center text-[1.8rem]"
-            v-if="column.dataIndex === 'price'"
-            >{{record.price}}đ</span>
+            <span
+                class="text-center text-[1.8rem]"
+                v-if="column.dataIndex === 'price'"
+                >{{ record.price }}đ</span
+            >
             <div
                 class="flex justify-center cursor-pointer text-[1.8rem] z-2"
                 v-if="column.dataIndex === 'quantity'"
             >
                 <a-button-group>
-                  <a-button @click="decline(index)">
-                    <minus-outlined />
-                  </a-button>
-                  <a-button class="cursor-default">{{count[index].quantity}}</a-button>
-                  <a-button @click="increase(index)">
-                    <plus-outlined />
-                  </a-button>
+                    <a-button @click="decline(index)">
+                        <minus-outlined />
+                    </a-button>
+                    <a-button class="cursor-default">{{
+                        count[index].quantity
+                    }}</a-button>
+                    <a-button @click="increase(index)">
+                        <plus-outlined />
+                    </a-button>
                 </a-button-group>
             </div>
-            <span 
-            class="text-center text-[1.8rem]"
-            v-if="column.dataIndex === 'money'"
-            >{{record.price * count[index].quantity}}đ</span>
             <span
-                class=" text-center text-red-600 text-[1.8rem]"
+                class="text-center text-[1.8rem]"
+                v-if="column.dataIndex === 'money'"
+                >{{ record.price * count[index].quantity }}đ</span
+            >
+            <span
+                class="text-center text-red-600 text-[1.8rem]"
                 v-if="column.dataIndex === 'tt'"
             >
-                <DeleteFilled @click="handleDeleteCartItem(record.key)"/>
-            </span> 
-    </template>
-  </a-table>
+                <DeleteFilled @click="handleDeleteCartItem(record.key)" />
+            </span>
+        </template>
+    </a-table>
     <div class="text-[2rem] text-[var(--primary-color)] mt-3">
-      <span class="mx-6">Tổng:</span>
-      <span class="">{{total}}</span>
+        <span class="mx-6">Tổng:</span>
+        <span class="">{{ total }}</span>
     </div>
-  <button
-      class="my-[36px] text-[1.8rem] float-end text-white p-3 px-6 bg-[var(--primary-color)] rounded hover:opacity-60"
-      @click="checkout"
-  >
-      Mua hàng
-  </button>
-  <a-spin 
-  v-if="showLoading"
-  :indicator="indicator"
-  class="z-[1000] fixed inset-0 flex items-center justify-center"
-  style="background-color: rgba(0, 0, 0, 0.3)"
-  />
+    <button
+        class="my-[36px] text-[1.8rem] float-end text-white p-3 px-6 bg-[var(--primary-color)] rounded hover:opacity-60"
+        @click="checkout"
+    >
+        Mua hàng
+    </button>
+    <a-spin
+        v-if="showLoading"
+        :indicator="indicator"
+        class="z-[1000] fixed inset-0 flex items-center justify-center"
+        style="background-color: rgba(0, 0, 0, 0.3)"
+    />
 </template>

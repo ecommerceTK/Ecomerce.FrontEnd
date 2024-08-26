@@ -173,9 +173,7 @@ onMounted(async () => {
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
         >
-            <a-form-item
-                name="shopname"
-            >
+            <a-form-item name="shopname">
                 <template #label>
                     <div>
                         <span class="mr-[3px] text-[#ee4d2d]">*</span>
@@ -221,9 +219,7 @@ onMounted(async () => {
                 ></a-select>
             </div>
 
-            <a-form-item
-                name="shopname"
-            >
+            <a-form-item name="shopname">
                 <template #label>
                     <div>
                         <span class="mr-[3px] text-[#ee4d2d]">*</span>

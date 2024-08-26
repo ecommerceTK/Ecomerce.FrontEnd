@@ -1,5 +1,5 @@
 <script setup>
-import { defaultProduct } from "../../../assets";
+import { defaultProduct } from '../../../assets';
 
 const columns = [
     {
@@ -19,42 +19,41 @@ const columns = [
         title: 'Tổng',
         dataIndex: 'total',
         key: 'total',
-        colSpan: '16%', 
-        align:'center',
+        colSpan: '16%',
+        align: 'center',
     },
     {
         title: 'Trạng thái',
         dataIndex: 'status',
         key: 'status',
-        colSpan: '16%', 
-        align:'center',
+        colSpan: '16%',
+        align: 'center',
     },
 ];
 
 const data = [
-  {
-    key: '1',
-    imgUrl: defaultProduct,
-    name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-    total: 124,
-    status: 'Đang giao',
-  },
-  {
-    key: '2',
-    imgUrl: defaultProduct,
-    name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-    total: 124,
-    status: 'Đang giao',
-  },
-  {
-    key: '3',
-    imgUrl: defaultProduct,
-    name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-    total: 124,
-    status: 'Đang giao',
-  },
+    {
+        key: '1',
+        imgUrl: defaultProduct,
+        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
+        total: 124,
+        status: 'Đang giao',
+    },
+    {
+        key: '2',
+        imgUrl: defaultProduct,
+        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
+        total: 124,
+        status: 'Đang giao',
+    },
+    {
+        key: '3',
+        imgUrl: defaultProduct,
+        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
+        total: 124,
+        status: 'Đang giao',
+    },
 ];
-
 </script>
 
 <template>
@@ -102,45 +101,49 @@ const data = [
             </div>
         </div> -->
 
-        <a-table 
-            class="mt-[48px] shadow-md" 
-            :columns="columns" 
-            :data-source="data">
-                <template #headerCell="{ column }">
-                    <div class="text-[2rem]">{{ column.title }}</div>
+        <a-table
+            class="mt-[48px] shadow-md"
+            :columns="columns"
+            :data-source="data"
+        >
+            <template #headerCell="{ column }">
+                <div class="text-[2rem]">{{ column.title }}</div>
+            </template>
+            <template #bodyCell="{ column, record }">
+                <template v-if="column.dataIndex === 'orderId'">
+                    <span
+                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                        >#{{ record.key }}</span
+                    >
                 </template>
-                <template #bodyCell="{ column, record }">
-                    <template v-if="column.dataIndex === 'orderId'">
-                        <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{record.key}}</span>
-                    </template>
-                    <template v-if="column.dataIndex === 'name'">
-                        <div class="flex items-center">
-                            <img
-                                class="w-[80px] object-cover cursor-pointer"
-                                :src="defaultProduct"
-                                alt=""
-                            />
-                            <p
-                                class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
-                            >
-                                Quần Thun x 1, Áo thun x 2
-                                <span>Quận Tây Hồ, thành phố Hà Nội</span>
-                            </p>
-                        </div>
-                    </template>
-                    <template v-if="column.dataIndex === 'total'">
-                        <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{record.total}}</span>
-                    </template>
-                    <template v-if="column.dataIndex === 'status'">
-                        <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{record.status}}</span>
-                    </template>
+                <template v-if="column.dataIndex === 'name'">
+                    <div class="flex items-center">
+                        <img
+                            class="w-[80px] object-cover cursor-pointer"
+                            :src="defaultProduct"
+                            alt=""
+                        />
+                        <p
+                            class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
+                        >
+                            Quần Thun x 1, Áo thun x 2
+                            <span>Quận Tây Hồ, thành phố Hà Nội</span>
+                        </p>
+                    </div>
                 </template>
+                <template v-if="column.dataIndex === 'total'">
+                    <span
+                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                        >#{{ record.total }}</span
+                    >
+                </template>
+                <template v-if="column.dataIndex === 'status'">
+                    <span
+                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                        >#{{ record.status }}</span
+                    >
+                </template>
+            </template>
         </a-table>
     </div>
 </template>

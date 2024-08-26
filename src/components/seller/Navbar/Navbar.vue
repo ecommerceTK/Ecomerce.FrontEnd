@@ -2,9 +2,9 @@
 import { useRouter } from 'vue-router';
 import { defaultAvatar } from '../../../assets';
 import { useAuthUser } from '../../../storage/useAuthUser';
-import {useAuthToken} from '../../../storage/useAuthToken';
+import { useAuthToken } from '../../../storage/useAuthToken';
 
-const {token, clearToken} = useAuthToken();
+const { token, clearToken } = useAuthToken();
 const { userStore, clearUser } = useAuthUser();
 const user = JSON.parse(userStore.value);
 const router = useRouter();
@@ -12,11 +12,11 @@ const router = useRouter();
 const logout = async () => {
     //console.log({token});
     try {
-        const res = await authServices.logOut({ token:token.value });
+        const res = await authServices.logOut({ token: token.value });
         clearToken();
         clearUser();
         message.info('Đăng xuất thành công');
-        router.push({name: 'Login'});
+        router.push({ name: 'Login' });
     } catch (err) {
         console.log(err);
         // message.error(err.response.data.message);
@@ -50,7 +50,9 @@ const logout = async () => {
                             alt=""
                             class="w-[38px] rounded-full"
                         />
-                        <span class="text-[1.8rem]">{{user?.username.split('@')[0]}}</span>
+                        <span class="text-[1.8rem]">{{
+                            user?.username.split('@')[0]
+                        }}</span>
                     </a-button>
                     <template #overlay>
                         <a-menu>

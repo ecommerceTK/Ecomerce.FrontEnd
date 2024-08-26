@@ -1,49 +1,49 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { defaultProduct } from '../../../assets'; 
+import { defaultProduct } from '../../../assets';
 import mainServices from '../../../domain/mainServices';
 import ModalInfoAddress from '../../../components/modal/ModalInfoAddress.vue';
 
 const route = useRoute();
 const showModal = ref(true);
-const weight=ref(0);
-const items=ref([]);
-const address=ref('');
+const weight = ref(0);
+const items = ref([]);
+const address = ref('');
 const sumProduct = ref(0);
-const feeShip=ref(0);
+const feeShip = ref(0);
 const total = ref(0);
 const info = ref(null);
 
 const columns = [
-  {
-    title: 'Sản phẩm',
-    dataIndex: 'name',
-    key: 'name',
-    width: '48%',
-    ellipsis: true,
-  },
-  {
-    title: 'Giá',
-    dataIndex: 'price',
-    key: 'price',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Số lượng',
-    dataIndex: 'quantity',
-    key: 'quantity',
-    colSpan: '16%', 
-    align:'center',
-  },
-  {
-    title: 'Thành tiền',
-    dataIndex: 'total',
-    key: 'total',
-    colSpan: '16%', 
-    align:'center',
-  }
+    {
+        title: 'Sản phẩm',
+        dataIndex: 'name',
+        key: 'name',
+        width: '48%',
+        ellipsis: true,
+    },
+    {
+        title: 'Giá',
+        dataIndex: 'price',
+        key: 'price',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Số lượng',
+        dataIndex: 'quantity',
+        key: 'quantity',
+        colSpan: '16%',
+        align: 'center',
+    },
+    {
+        title: 'Thành tiền',
+        dataIndex: 'total',
+        key: 'total',
+        colSpan: '16%',
+        align: 'center',
+    },
 ];
 
 const data = ref([]);
@@ -54,44 +54,49 @@ const getPreOrders = async () => {
         const res = await mainServices.getPreOrder(route.query.orderId);
         preOrderItems.value = res.data.result;
         data.value = preOrderItems.value.map((item, index) => ({
-            key: String(index + 1), 
-            imgUrl: item.image_url || defaultProduct, 
-            name: item.name, 
-            price:item.price,
-            quantity: item.quantity, 
-            total: item.price * item.quantity, 
+            key: String(index + 1),
+            imgUrl: item.image_url || defaultProduct,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.price * item.quantity,
         }));
         items.value = preOrderItems.value.map((item, index) => ({
             name: item.name,
             quantity: item.quantity,
             weight: item.weight,
         }));
-        weight.value = preOrderItems.value.reduce((acc, item) => acc + item.weight, 0);
-        sumProduct.value = preOrderItems.value.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    } catch(err) {
-        console.log(err);       
+        weight.value = preOrderItems.value.reduce(
+            (acc, item) => acc + item.weight,
+            0
+        );
+        sumProduct.value = preOrderItems.value.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0
+        );
+    } catch (err) {
+        console.log(err);
     }
-}
+};
 
-const handleInfoValue = (e) => {
-    info.value=e;
+const handleInfoValue = e => {
+    info.value = e;
     console.log(info.value);
-}
+};
 
-const goToPay = async() => {
+const goToPay = async () => {
     try {
-        const res = await mainServices.payment(route.query.orderId );
+        const res = await mainServices.payment(route.query.orderId);
         window.location.href = res.data.result;
         console.log(res);
     } catch (err) {
         console.log(err);
     }
-}
+};
 
 onMounted(() => {
     getPreOrders();
-})
-
+});
 </script>
 <template>
     <div class="checkout">
@@ -137,12 +142,12 @@ onMounted(() => {
                     >
                 </div>
             </div> -->
-            <a-table 
-            v-if="data.length>0"
-            class="mt-[48px] shadow-md" 
-            :columns="columns" 
-            :data-source="data"
-            :pagination="false"
+            <a-table
+                v-if="data.length > 0"
+                class="mt-[48px] shadow-md"
+                :columns="columns"
+                :data-source="data"
+                :pagination="false"
             >
                 <template #headerCell="{ column }">
                     <div class="text-[2rem]">{{ column.title }}</div>
@@ -152,25 +157,34 @@ onMounted(() => {
                         <div class="flex items-center">
                             <img
                                 class="w-[80px] object-cover cursor-pointer"
-                                :src="record.imgUrl? record.imgUrl:defaultProduct"
+                                :src="
+                                    record.imgUrl
+                                        ? record.imgUrl
+                                        : defaultProduct
+                                "
                                 alt=""
                             />
                             <p
                                 class="flex-1 flex flex-col text-[1.8rem] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
                             >
-                                {{record.name}}
+                                {{ record.name }}
                             </p>
                         </div>
                     </template>
                     <template v-if="column.dataIndex === 'price'">
-                        <span class="text-center text-[1.8rem]">{{record.price}}</span>
+                        <span class="text-center text-[1.8rem]">{{
+                            record.price
+                        }}</span>
                     </template>
                     <template v-if="column.dataIndex === 'quantity'">
-                        <span class="text-center text-[1.8rem]">x{{record.quantity}}</span>
+                        <span class="text-center text-[1.8rem]"
+                            >x{{ record.quantity }}</span
+                        >
                     </template>
                     <template v-if="column.dataIndex === 'total'">
                         <span class="text-center text-[1.8rem]"
-                        >{{record.total}}đ</span>
+                            >{{ record.total }}đ</span
+                        >
                     </template>
                 </template>
             </a-table>
@@ -185,32 +199,16 @@ onMounted(() => {
                     </h2>
                     <div>
                         <span>Họ tên</span>
-                        <span>{{
-                            info
-                                ? info.name
-                                : ''
-                        }}
-                        </span>
+                        <span>{{ info ? info.name : '' }} </span>
                     </div>
                     <div>
                         <span>Số điện thoại</span>
-                        <span>{{
-                            info
-                                ? info.phone
-                                : ''
-                        }}
-                        </span>
+                        <span>{{ info ? info.phone : '' }} </span>
                     </div>
                     <div>
                         <span>Địa chỉ</span>
-                        <span>{{
-                            info
-                                ? info.address
-                                : ''
-                        }}
-                        </span>
+                        <span>{{ info ? info.address : '' }} </span>
                     </div>
-
                 </div>
                 <div
                     class="ml-auto flex flex-col gap-6 p-5 bg-white text-[1.6rem] w-[40%] shadow-xl"
@@ -222,15 +220,15 @@ onMounted(() => {
                     </h2>
                     <p>
                         Tổng giá:
-                        <span class="float-right">{{sumProduct}}đ</span>
+                        <span class="float-right">{{ sumProduct }}đ</span>
                     </p>
                     <p>
                         Phí vận chuyển:
-                        <span class="float-right">{{feeShip}}đ</span>
+                        <span class="float-right">{{ feeShip }}đ</span>
                     </p>
                     <p class="text-[2rem] text-[var(--primary-color)]">
                         Tổng:
-                        <span class="float-right">{{total}}đ</span>
+                        <span class="float-right">{{ total }}đ</span>
                     </p>
                 </div>
             </div>
@@ -242,11 +240,11 @@ onMounted(() => {
             </button>
         </div>
     </div>
-    <ModalInfoAddress 
-    :show="showModal" 
-    :weight="weight"
-    :itemsPro="items"
-    @setShowStatus="showModal = $event"
-    @setInfoValue="handleInfoValue"
+    <ModalInfoAddress
+        :show="showModal"
+        :weight="weight"
+        :itemsPro="items"
+        @setShowStatus="showModal = $event"
+        @setInfoValue="handleInfoValue"
     />
 </template>

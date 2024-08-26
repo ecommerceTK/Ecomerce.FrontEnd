@@ -145,10 +145,7 @@ const onModal = () => {
           class="border-solid border border-[#ccc] p-3 rounded w-full focus:border-none focus:ring-2 focus:outline-[var(--primary-color)]"
           v-model="info.username"
         /> -->
-                <a-form-item 
-                name="username"
-                class="mb-0"
-                >
+                <a-form-item name="username" class="mb-0">
                     <template #label>
                         <div>
                             <span class="mr-[3px] text-[#ee4d2d]">*</span>
@@ -178,10 +175,7 @@ const onModal = () => {
           class="border-solid border border-[#ccc] p-3 rounded w-full focus:border-none focus:ring-2 focus:outline-[var(--primary-color)]"
           v-model="info.password"
         /> -->
-                <a-form-item 
-                name="password" 
-                class="mb-0"
-                >
+                <a-form-item name="password" class="mb-0">
                     <template #label>
                         <div>
                             <span class="mr-[3px] text-[#ee4d2d]">*</span>

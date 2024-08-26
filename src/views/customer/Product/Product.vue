@@ -10,7 +10,7 @@ console.log(productId);
 </script>
 
 <template>
-    <ProductDetail/>
+    <ProductDetail />
 
     <!-- <div class="mt-[20px]">
         <h2 class="text-[24px] font-bold">Khách hàng đánh giá</h2>

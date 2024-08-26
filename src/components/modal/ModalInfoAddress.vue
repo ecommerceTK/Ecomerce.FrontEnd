@@ -7,19 +7,19 @@ import { useRoute, useRouter } from 'vue-router';
 import mainServices from '../../domain/mainServices';
 
 const router = useRouter();
-const route=useRoute();
+const route = useRoute();
 const options1 = ref(null);
 const options2 = ref(null);
 const options3 = ref(null);
-const status=ref(false);
+const status = ref(false);
 
 const emit = defineEmits(['setShowStatus']);
 const props = defineProps({
     show: Boolean,
     weight: Number,
     itemsPro: Array,
-})
-const {show, weight, itemsPro} = toRefs(props);
+});
+const { show, weight, itemsPro } = toRefs(props);
 
 console.log(show, weight, itemsPro);
 
@@ -86,9 +86,15 @@ const handleSelectXa = async () => {
 };
 
 const getTotalCost = async () => {
-    const selectedOption1 = options1.value.find(option => option.value === result.tinh);
-    const selectedOption2 = options2.value.find(option => option.value === result.quan);
-    const selectedOption3 = options3.value.find(option => option.value === result.xa);
+    const selectedOption1 = options1.value.find(
+        option => option.value === result.tinh
+    );
+    const selectedOption2 = options2.value.find(
+        option => option.value === result.quan
+    );
+    const selectedOption3 = options3.value.find(
+        option => option.value === result.xa
+    );
 
     const label1 = selectedOption1 ? selectedOption1.label : 'Label not found';
     const label2 = selectedOption2 ? selectedOption2.label : 'Label not found';
@@ -99,13 +105,17 @@ const getTotalCost = async () => {
         const res = await mainServices.getTotalCost(route.query.orderId, {
             to_district_id: result.quan,
         });
-        status.value=true;
+        status.value = true;
         console.log(res);
-        emit('setInfoValue', { name: result.name, phone: result.phone, address: addressInfo });
-    } catch(error) {
+        emit('setInfoValue', {
+            name: result.name,
+            phone: result.phone,
+            address: addressInfo,
+        });
+    } catch (error) {
         console.log(error);
     }
-}
+};
 
 const handleCloseModal = () => {
     emit('setShowStatus', false);
@@ -136,10 +146,7 @@ onMounted(async () => {
                 Thông tin giao hàng
             </h2>
             <a-form layout="vertical" class="">
-                <a-form-item
-                    label="Họ tên"
-                    name="name"
-                >
+                <a-form-item label="Họ tên" name="name">
                     <a-input v-model:value="result.name" />
                 </a-form-item>
 
@@ -188,10 +195,7 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <a-form-item
-                    label="Địa chỉ chi tiết"
-                    name="address"
-                >
+                <a-form-item label="Địa chỉ chi tiết" name="address">
                     <a-textarea
                         class="placeholder-custom"
                         v-model:value="result.detail"

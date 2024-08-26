@@ -43,7 +43,7 @@ const toggleContent = () => {
 };
 
 const goToCart = async () => {
-    if(!token.value) return message.error('Bạn chưa đăng nhập');
+    if (!token.value) return message.error('Bạn chưa đăng nhập');
     if (!valueid) return message.error('Bạn chưa chọn phân loại');
     const data = {
         product_id: product.value.product_id,
@@ -76,7 +76,6 @@ const handleValue = (name, value) => {
         };
     }
     console.log(valueid.value);
-    
 };
 
 onMounted(() => {
@@ -89,7 +88,7 @@ onMounted(() => {
         <div
             class="w-[450px] border-solid border border-[var(--primary-color)] h-min"
         >
-            <img class="w-[100%] " :src="`http://${currentImg}`" alt="" />
+            <img class="w-[100%]" :src="`http://${currentImg}`" alt="" />
             <Carousel :items-to-show="2.5" :wrap-around="true">
                 <Slide
                     v-for="img in productImg"
@@ -138,7 +137,7 @@ onMounted(() => {
             </div>
             <div class="text-[1.8rem] mt-[20px]">
                 <span>Cân nặng:</span>
-                <span class="ml-3 text-[#796e6e]">{{product.weight}}kg</span>
+                <span class="ml-3 text-[#796e6e]">{{ product.weight }}kg</span>
             </div>
             <div class="center mt-20" v-if="assortment.length > 0">
                 <h3 class="text-[18px] font-semibold mb-6">Phân loại</h3>

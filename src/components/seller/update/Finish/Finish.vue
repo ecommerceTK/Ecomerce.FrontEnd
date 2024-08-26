@@ -269,7 +269,10 @@ watch(
             </div>
         </div>
     </div>
-    <a-button type="primary" @click="onSubmit" class="uppercase mt-[24px] float-end mr-[192px]"
+    <a-button
+        type="primary"
+        @click="onSubmit"
+        class="uppercase mt-[24px] float-end mr-[192px]"
         >Cập nhật</a-button
     >
 </template>

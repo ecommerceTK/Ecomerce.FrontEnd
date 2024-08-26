@@ -22,7 +22,11 @@ const { product } = toRefs(props);
             <div class="relative z-0 w-full pt-[100%]">
                 <img
                     class="inset-y-0 w-full h-full pointer-events-none object-cover absolute"
-                    :src="product.imageUrl.includes('null')?defaultProduct:`http://${product.imageUrl}`"
+                    :src="
+                        product.imageUrl.includes('null')
+                            ? defaultProduct
+                            : `http://${product.imageUrl}`
+                    "
                     alt=""
                 />
             </div>

@@ -6,7 +6,6 @@ import EmptyProduct from '../../../../components/seller/list/EmptyProduct';
 
 const activeKey = ref('1');
 const slcl = ref(6);
-
 </script>
 
 <template>
@@ -24,15 +23,14 @@ const slcl = ref(6);
         >
             <a-tabs v-model:activeKey="activeKey" class="text-[1.6rem]">
                 <a-tab-pane key="1" tab="Tất cả">
-                    <AllProduct/>            
+                    <AllProduct />
                 </a-tab-pane>
                 <a-tab-pane key="2" force-render>
                     <template v-slot:tab> Đang hoạt động({{ slcl }}) </template>
                     <TopProduct />
                 </a-tab-pane>
-                <a-tab-pane key="3" tab="Hết hàng"
-                >
-                <EmptyProduct/>
+                <a-tab-pane key="3" tab="Hết hàng">
+                    <EmptyProduct />
                 </a-tab-pane>
             </a-tabs>
         </div>
@@ -52,5 +50,3 @@ const slcl = ref(6);
     }
 }
 </style>
-
-

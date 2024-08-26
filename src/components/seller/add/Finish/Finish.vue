@@ -66,7 +66,8 @@ const onFinish = () => {
 };
 
 const onSubmit = async () => {
-    if(!idProduct.value) return message.error('Bạn cần nhập phần thông tin cơ bản trước')
+    if (!idProduct.value)
+        return message.error('Bạn cần nhập phần thông tin cơ bản trước');
     try {
         const res = await mainServices.addAssortmentProduct({
             productId: idProduct.value,
@@ -77,7 +78,7 @@ const onSubmit = async () => {
         message.info('Success');
     } catch (err) {
         console.log(err);
-        message.error('Vui lòng nhập đúng thông tin')
+        message.error('Vui lòng nhập đúng thông tin');
     }
 };
 
@@ -276,7 +277,10 @@ watch(
             </div>
         </div>
     </div>
-    <a-button type="primary" @click="onSubmit" class="uppercase mt-[24px] float-end mr-[192px]"
+    <a-button
+        type="primary"
+        @click="onSubmit"
+        class="uppercase mt-[24px] float-end mr-[192px]"
         >Add</a-button
     >
 </template>

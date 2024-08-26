@@ -108,10 +108,11 @@ const uploadFileToSignedUrl = async (url, file) => {
 };
 
 const handleUpload = async ({ onSuccess, onError, file }) => {
-    if(!idProduct.value) return message.error('Bạn cần nhập phần thông tin cơ bản trước')
+    if (!idProduct.value)
+        return message.error('Bạn cần nhập phần thông tin cơ bản trước');
     await getSignedUrl();
     await uploadFileToSignedUrl(result.value.url, file);
-    file.name=result.value.fileName;
+    file.name = result.value.fileName;
     try {
         const response = await mainServices.addImgProduct(
             idProduct.value,

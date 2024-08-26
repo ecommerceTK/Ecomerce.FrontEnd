@@ -22,7 +22,7 @@ const cartItemCount = ref(0);
 const getItemCart = async () => {
     try {
         const res = await mainServices.getItemCart();
-        console.log(res);  
+        console.log(res);
         cartItemCount.value = res.data?.result.length;
     } catch (err) {
         console.log(err);
@@ -41,16 +41,16 @@ const goToSellerPage = () => {
 };
 
 const goToCart = () => {
-    if(token.value) {
+    if (token.value) {
         return router.push({ name: 'Cart' });
     }
     return message.error('Bạn chưa đăng nhập');
-}
+};
 
 const logout = async () => {
     //console.log({token});
     try {
-        const res = await authServices.logOut({ token:token.value });
+        const res = await authServices.logOut({ token: token.value });
         clearToken();
         clearUser();
         message.info('Đăng xuất thành công');
@@ -87,7 +87,7 @@ const handleSearch = () => {
 };
 onMounted(() => {
     getItemCart();
-})
+});
 </script>
 <template>
     <header
@@ -95,13 +95,15 @@ onMounted(() => {
     >
         <nav class="flex justify-between">
             <ul>
-                <li class="text-[#e4d5d5]" @click="goToSellerPage">Trang bán hàng</li>
+                <li class="text-[#e4d5d5]" @click="goToSellerPage">
+                    Trang bán hàng
+                </li>
             </ul>
             <ul v-if="!userStore">
                 <li class="separate text-[#e4d5d5]">
                     <router-link to="/login">Đăng nhập</router-link>
                 </li>
-                <li class="text-[#e4d5d5]" >
+                <li class="text-[#e4d5d5]">
                     <router-link to="/register">Đăng kí</router-link>
                 </li>
             </ul>
@@ -151,7 +153,9 @@ onMounted(() => {
                 <template #overlay>
                     <a-menu>
                         <a-menu-item>
-                            <router-link :to="{ name: 'Order' }">Order</router-link>
+                            <router-link :to="{ name: 'Order' }"
+                                >Order</router-link
+                            >
                         </a-menu-item>
                         <a-menu-item>
                             <router-link :to="{ name: 'ChangePassword' }"
@@ -189,10 +193,10 @@ onMounted(() => {
                 </div>
             </div>
             <div class="relative mr-[86px] z-0">
-                <ShoppingCartOutlined class="carticon" @click="goToCart"/>
+                <ShoppingCartOutlined class="carticon" @click="goToCart" />
                 <span
                     class="absolute top-[-8px] right-[-8px] text-white text-xl px-3 py-1 bg-[var(--primary-color)] rounded-full"
-                    >{{cartItemCount}}</span
+                    >{{ cartItemCount }}</span
                 >
             </div>
         </div>
