@@ -79,15 +79,17 @@ const getPreOrders = async () => {
     }
 };
 
-const handleInfoValue = e => {
+const handleInfoValue = async(e) => {
     info.value = e;
-    console.log(info.value);
+    feeShip.value = e.shipping_fee
+    total.value = e.total_cost
 };
 
 const goToPay = async () => {
     try {
-        const res = await mainServices.payment(route.query.orderId);
-        window.location.href = res.data.result;
+        const res = await mainServices.payment(route.query.orderId, total.value);
+        console.log(res);
+        window.location.href = res.data.result.url;
         console.log(res);
     } catch (err) {
         console.log(err);

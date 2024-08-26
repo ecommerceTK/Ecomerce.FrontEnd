@@ -6,9 +6,9 @@ const { token, refreshToken, setToken, clearToken } = useAuthToken();
 const { clearUser } = useAuthUser();
 
 const httpApi = axios.create({
-    baseURL: 'https://ccd0-222-254-21-29.ngrok-free.app/api/v1/',
+    baseURL: 'http://localhost:8080/api/v1/',
     headers: {
-        'ngrok-skip-browser-warning': '1',
+        // 'ngrok-skip-browser-warning': '1',
         Accept: 'application/json',
     },
 });
@@ -41,7 +41,6 @@ httpApi.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
-
         if (error.response.status === 401 && !originalRequest._retry) {
             if (isRefreshing) {
                 // Chờ đợi cho đến khi refreshPromise hoàn thành

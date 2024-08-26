@@ -93,12 +93,12 @@ const router = createRouter({
         {
             path: '/login',
             name: 'Login',
-            component: () => import('../views/Login'),
+            component: () => import('../views/login'),
         },
         {
             path: '/register',
             name: 'Register',
-            component: () => import('../views/Register'),
+            component: () => import('../views/register'),
         },
         {
             path: '/seller/profile',
@@ -108,7 +108,7 @@ const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             name: 'NotFound',
-            component: () => import('../views/NotFound'),
+            component: () => import('../views/notfound'),
         },
         {
             path: '/failPayment',

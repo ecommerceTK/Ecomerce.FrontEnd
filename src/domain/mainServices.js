@@ -132,7 +132,7 @@ export default {
         return http.get(`order/preOrder/${id}`);
     },
     checkOrder(id) {
-        return http.get('order/status', {
+        return http.get('order/preOrder/status', {
             params: {
                 orderId: id,
             },
@@ -146,14 +146,14 @@ export default {
             },
         });
     },
-    payment(id) {
+    payment(id, total_cost) {
         return http.post(
-            'payments2/create_payment_url',
+            'payments/create_payment_url',
             {
                 vnp_version: null,
                 vnp_command: null,
                 vnp_tmn_code: null,
-                vnp_amount: 5841000,
+                vnp_amount: total_cost,
                 vnp_bank_code: null,
                 vnp_create_date: null,
                 vnp_curr_code: null,

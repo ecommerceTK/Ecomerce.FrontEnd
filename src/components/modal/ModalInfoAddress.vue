@@ -111,7 +111,10 @@ const getTotalCost = async () => {
             name: result.name,
             phone: result.phone,
             address: addressInfo,
+            shipping_fee: res.data.result.shipping_fee,
+            total_cost: res.data.result.total_cost
         });
+        handleCloseModal()
     } catch (error) {
         console.log(error);
     }

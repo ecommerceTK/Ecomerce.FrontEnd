@@ -150,21 +150,36 @@ const rowSelection = {
 const checkOrder = async id => {
     try {
         showLoading.value = true;
-        const res = await mainServices.checkOrder(id);
-        if (res.data.result === 'Success') {
-            router.push({
-                path: '/checkout', // Đường dẫn tới trang checkout
-                query: {
-                    // Truyền tham số qua query
-                    orderId: id,
-                },
-            });
-        } else if (res.data.result === 'Failed') {
-            message.error(
-                'Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại'
-            );
-            showLoading.value = false;
-        }
+        const intervalId = setInterval(async () => {
+            const res = await mainServices.checkOrder(id);
+
+            if(res.data.result) {
+                if (res.data.result === 'Success') {
+                    clearInterval(intervalId);
+                router.push({
+                    path: '/checkout', // Đường dẫn tới trang checkout
+                    query: {
+                        // Truyền tham số qua query
+                        orderId: id,
+                    },
+                });
+            } else if (res.data.result === 'Failed') {
+                message.error(
+                    'Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại'
+                );
+                clearInterval(intervalId);
+                showLoading.value = false;
+            }
+            } else {
+                message.error(
+                    'Vui lòng thử lại'
+                );
+                clearInterval(intervalId);
+                showLoading.value = false;
+            }
+        }, 500);
+        
+
     } catch (err) {
         console.log(err);
         message.error('Đã có lỗi xảy ra');
