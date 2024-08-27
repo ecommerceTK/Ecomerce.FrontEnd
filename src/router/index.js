@@ -38,7 +38,12 @@ const router = createRouter({
                     component: () => import('../views/customer/Order'),
                 },
                 {
-                    path: '/verify',
+                    path: '/orderList',
+                    name: 'OrderList',
+                    component: () => import('../views/customer/OrderList'),
+                },
+                {
+                    path: '/order/verify',
                     name: 'Verify',
                     component: () => import('../views/customer/Verify'),
                 },

@@ -10,6 +10,8 @@ const isLoading = ref(false);
 const pageSize = ref(30);
 const current = ref(1);
 const total = ref(null);
+const orderSeller = ref([]);
+const data=ref([]);
 
 const columns = [
     {
@@ -41,33 +43,23 @@ const columns = [
         align: 'center',
     },
 ];
-const data = [
-    {
-        key: 1,
-        imgUrl: defaultProduct,
-        name: 'Phụ kiện công',
-        quantity: 2,
-        total: 123,
-        status: 'Đã giao',
-    },
-    {
-        key: 2,
-        imgUrl: defaultProduct,
-        name: 'Phụ kiện công',
-        quantity: 2,
-        total: 123,
-        status: 'Đã giao',
-    },
-    {
-        key: 3,
-        imgUrl: defaultProduct,
-        name: 'Phụ kiện công',
-        quantity: 2,
-        total: 123,
-        status: 'Đã giao',
-    },
-];
-const getOrderSeller = () => {};
+
+const getOrderSeller = async() => {
+    try {
+        const res = await mainServices.getAllOrderSeller();
+        orderSeller.value = res.data.result;
+        data.value =  orderSeller.value.map((product, index) => ({
+            key: product.ord_item_code,
+            price: product.ord_item_price,
+            quantity: product.ord_item_quantity,
+            total:product.ord_item_quantity*product.ord_item_price,
+            name: product.ord_item_name,
+            imgUrl: product.ord_item_image,
+        }));
+    } catch(err) {
+        console.log(err);
+    }
+};
 
 const onChangePage = page => {
     current.value = page;
@@ -152,13 +144,13 @@ onMounted(() => {
                         </template>
                     </a-table>
                 </a-tab-pane>
-                <a-tab-pane key="2" force-render>
+                <!-- <a-tab-pane key="2" force-render>
                     <template v-slot:tab> Đang giao </template>
                     Content of Tab Pane 2
                 </a-tab-pane>
                 <a-tab-pane key="3" tab="Đã giao"
                     >Content of Tab Pane 3</a-tab-pane
-                >
+                > -->
             </a-tabs>
         </div>
     </div>

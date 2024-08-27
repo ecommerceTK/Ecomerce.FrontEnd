@@ -96,11 +96,11 @@ const getTotalCost = async () => {
         option => option.value === result.xa
     );
 
-    const label1 = selectedOption1 ? selectedOption1.label : 'Label not found';
-    const label2 = selectedOption2 ? selectedOption2.label : 'Label not found';
-    const label3 = selectedOption3 ? selectedOption3.label : 'Label not found';
+    const label1 = selectedOption1 ? selectedOption1.label : '';
+    const label2 = selectedOption2 ? selectedOption2.label : '';
+    const label3 = selectedOption3 ? selectedOption3.label : '';
 
-    const addressInfo = `${result.detail}, ${label1}, ${label2}, ${label3}`;
+    const addressInfo = `${result.detail}, ${label3}, ${label2}, ${label1}`;
     try {
         const res = await mainServices.getTotalCost(route.query.orderId, {
             to_district_id: result.quan,
@@ -111,7 +111,10 @@ const getTotalCost = async () => {
             name: result.name,
             phone: result.phone,
             address: addressInfo,
+            shipping_fee: res.data.result.shipping_fee,
+            total_cost: res.data.result.total_cost
         });
+        handleCloseModal()
     } catch (error) {
         console.log(error);
     }

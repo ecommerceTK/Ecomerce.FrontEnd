@@ -112,7 +112,7 @@ const handleUpload = async ({ onSuccess, onError, file }) => {
         return message.error('Bạn cần nhập phần thông tin cơ bản trước');
     await getSignedUrl();
     await uploadFileToSignedUrl(result.value.url, file);
-    file.name = result.value.fileName;
+
     try {
         const response = await mainServices.addImgProduct(
             idProduct.value,
@@ -147,7 +147,6 @@ const handleRemove = async file => {
     <a-form-item
         label="Hình ảnh"
         name="img"
-        :rules="[{ required: true, message: 'Bạn cần thêm ảnh cho sản phẩm' }]"
     >
         <div class="clearfix">
             <a-upload

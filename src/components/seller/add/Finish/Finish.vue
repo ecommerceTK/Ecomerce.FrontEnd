@@ -8,7 +8,9 @@ import {
 } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import mainServices from '../../../../domain/mainServices';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const status = ref(true);
 const formRef = ref(null);
 const dynamicValidateForm = reactive({
@@ -75,7 +77,9 @@ const onSubmit = async () => {
             valueCombination: valueCombi.value,
         });
         console.log(res);
-        message.info('Success');
+        message.success('Success');
+        router.push({name: 'AllSellerProduct'});
+
     } catch (err) {
         console.log(err);
         message.error('Vui lòng nhập đúng thông tin');

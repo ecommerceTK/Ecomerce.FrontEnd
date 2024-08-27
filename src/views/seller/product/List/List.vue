@@ -6,6 +6,8 @@ import EmptyProduct from '../../../../components/seller/list/EmptyProduct';
 
 const activeKey = ref('1');
 const slcl = ref(6);
+const totalList = ref(0);
+
 </script>
 
 <template>
@@ -22,16 +24,17 @@ const slcl = ref(6);
             style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
         >
             <a-tabs v-model:activeKey="activeKey" class="text-[1.6rem]">
-                <a-tab-pane key="1" tab="Tất cả">
-                    <AllProduct />
+                <a-tab-pane key="1">
+                    <template v-slot:tab> Tất cả({{ totalList }}) </template>
+                    <AllProduct @setShowTotal="totalList = $event"/>
                 </a-tab-pane>
-                <a-tab-pane key="2" force-render>
+                <!-- <a-tab-pane key="2" force-render>
                     <template v-slot:tab> Đang hoạt động({{ slcl }}) </template>
                     <TopProduct />
                 </a-tab-pane>
                 <a-tab-pane key="3" tab="Hết hàng">
                     <EmptyProduct />
-                </a-tab-pane>
+                </a-tab-pane> -->
             </a-tabs>
         </div>
     </div>

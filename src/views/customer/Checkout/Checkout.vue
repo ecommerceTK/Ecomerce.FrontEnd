@@ -59,6 +59,7 @@ const getPreOrders = async () => {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
+            valueCombi: item.value_combination_details,
             total: item.price * item.quantity,
         }));
         items.value = preOrderItems.value.map((item, index) => ({
@@ -79,16 +80,18 @@ const getPreOrders = async () => {
     }
 };
 
-const handleInfoValue = e => {
+const handleInfoValue = async(e) => {
     info.value = e;
-    console.log(info.value);
+    feeShip.value = e.shipping_fee
+    total.value = e.total_cost
 };
 
 const goToPay = async () => {
     try {
-        const res = await mainServices.payment(route.query.orderId);
-        window.location.href = res.data.result;
+        const res = await mainServices.payment(route.query.orderId, total.value);
         console.log(res);
+        window.location.href = res.data.result.url;
+        //console.log(res);
     } catch (err) {
         console.log(err);
     }
@@ -164,11 +167,16 @@ onMounted(() => {
                                 "
                                 alt=""
                             />
-                            <p
-                                class="flex-1 flex flex-col text-[1.8rem] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
-                            >
-                                {{ record.name }}
-                            </p>
+                            <div class="flex flex-col gap-3">
+                                <span>{{ record.name }}</span>
+                                <div class="flex gap-3">
+                                    <span>Phân loại:</span>
+                                    <div>
+                                        <span v-if="record.valueCombi.value1_name" class="mr-3">{{record.valueCombi.value1_name}},</span>
+                                        <span v-if="record.valueCombi.value2_name">{{record.valueCombi.value2_name}}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </template>
                     <template v-if="column.dataIndex === 'price'">
@@ -198,15 +206,15 @@ onMounted(() => {
                         Thông tin giao hàng
                     </h2>
                     <div>
-                        <span>Họ tên</span>
+                        <span class="mr-3">Họ tên: </span>
                         <span>{{ info ? info.name : '' }} </span>
                     </div>
                     <div>
-                        <span>Số điện thoại</span>
+                        <span class="mr-3">Số điện thoại:</span>
                         <span>{{ info ? info.phone : '' }} </span>
                     </div>
                     <div>
-                        <span>Địa chỉ</span>
+                        <span class="mr-3">Địa chỉ:</span>
                         <span>{{ info ? info.address : '' }} </span>
                     </div>
                 </div>

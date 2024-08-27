@@ -13,6 +13,7 @@ export default {
         });
     },
     login(data) {
+        console.log(data)
         return http.post('auth/login', data);
     },
     getUser() {

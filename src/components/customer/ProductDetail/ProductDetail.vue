@@ -67,14 +67,18 @@ const goToCart = async () => {
 const handleValue = (name, value) => {
     console.log(name, value);
 
-    if (valueid.value[name]) {
-        delete valueid.value[name];
-    } else {
+    if(valueid.value == null) {
         valueid.value = {
+            [name]: value
+        }
+        return;
+    }
+
+    valueid.value = {
             ...valueid.value,
             [name]: value,
         };
-    }
+
     console.log(valueid.value);
 };
 

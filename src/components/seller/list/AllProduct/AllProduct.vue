@@ -12,6 +12,7 @@ const isLoading = ref(false);
 const pageSize = ref(30);
 const current = ref(1);
 const total = ref(null);
+const emit = defineEmits(['setShowTotal']);
 
 const columns = [
     {
@@ -108,6 +109,7 @@ const goToUpdateProduct = id => {
 
 const getProductSeller = async () => {
     try {
+        isLoading.value=true;
         const res = await mainServices.getProductOfSeller(
             current.value - 1,
             pageSize.value
@@ -115,8 +117,10 @@ const getProductSeller = async () => {
         //console.log(res);
         products.value = res.data.result.content;
         total.value = res.data.result.totalElements;
+        emit('setShowTotal', total.value);
         updateData();
     } catch (err) {
+        isLoading.value=false;
         console.log(err);
     }
 };
@@ -146,7 +150,9 @@ onMounted(() => {
 </script>
 
 <template>
+    <!-- <div v-if="isLoading">Loading...</div> -->
     <a-table
+        v-if="products"
         :columns="columns"
         :data-source="data"
         @expand="onExpand"

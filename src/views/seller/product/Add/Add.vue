@@ -24,19 +24,22 @@ const updateIdProduct = newId => {
                 class="bg-[#fff] p-[24px] rounded overflow-hidden"
                 style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
             >
-                <First @updateId="updateIdProduct" :idProduct="idProduct" />
+                <First 
+                @updateId="updateIdProduct" 
+                :idProduct="idProduct" 
+                />
             </div>
             <div
                 class="bg-[#fff] p-[24px] rounded overflow-hidden"
                 style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
             >
-                <Second @updateId="updateIdProduct" :idProduct="idProduct" />
+                <Second :idProduct="idProduct" />
             </div>
             <div
                 class="bg-[#fff] p-[24px] rounded overflow-hidden"
                 style="boxshadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1)"
             >
-                <Finish @updateId="updateIdProduct" :idProduct="idProduct" />
+                <Finish :idProduct="idProduct" />
             </div>
         </div>
     </div>

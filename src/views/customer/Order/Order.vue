@@ -1,11 +1,18 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { defaultProduct } from '../../../assets';
+import mainServices from '../../../domain/mainServices';
+
+const route = useRoute();
+const orderItem = ref([]);
+const data = ref([]);
 
 const columns = [
     {
-        title: 'Mã đơn',
-        dataIndex: 'orderId',
-        key: 'orderId',
+        title: 'Mã',
+        dataIndex: 'code',
+        key: 'stt',
         width: '120px',
     },
     {
@@ -14,6 +21,13 @@ const columns = [
         key: 'name',
         width: '48%',
         ellipsis: true,
+    },
+    {
+        title: 'Số lượng',
+        dataIndex: 'quantity',
+        key: 'quantity',
+        colSpan: '16%',
+        align: 'center',
     },
     {
         title: 'Tổng',
@@ -31,119 +45,128 @@ const columns = [
     },
 ];
 
-const data = [
-    {
-        key: '1',
-        imgUrl: defaultProduct,
-        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-        total: 124,
-        status: 'Đang giao',
-    },
-    {
-        key: '2',
-        imgUrl: defaultProduct,
-        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-        total: 124,
-        status: 'Đang giao',
-    },
-    {
-        key: '3',
-        imgUrl: defaultProduct,
-        name: 'Quần Thun unisex vintage logo New Era hàng Chính hãng-bgsneak',
-        total: 124,
-        status: 'Đang giao',
-    },
-];
+const getOrderDetail = async() => {
+    try {
+        const res = await mainServices.getOrderDetail(route.query.order_code);
+        orderItem.value=res.data.result;
+        console.log(orderItem.value);
+        data.value = orderItem.value.map((item, index) => ({
+            key: item.ord_item_code,
+            imgUrl: item.ord_item_image || defaultProduct,
+            name: item.ord_item_name,
+            value1: item.ord_item_product_value1,
+            value2: item.ord_item_product_value2,
+            quantity:item.ord_item_quantity, 
+            total: item.ord_item_quantity*item.ord_item_price,
+            status: item.ord_item_status,
+        }));
+    } catch(err) {
+        console.log(err);
+    }
+}
+onMounted(() => {
+    getOrderDetail();
+})
 </script>
 
 <template>
-    <div class="my-[60px]">
-        <h2
-            class="text-center text-[3.5rem] mb-10 text-[var(--primary-color)] font-bold"
-        >
-            Đơn hàng
-        </h2>
-        <!-- <div class="rounded border-solid border border-[var(--primary-color)]">
-            <div
-                class="flex items-center bg-[#fff] text-[#888] text-[16px] h-[60px] px-[20px] py-[30px] shadow-sm"
-            >
-                <span class="min-w-[100px] pr-[15px] pl-[25px]">Mã đơn</span>
-                <span class="w-[68%] ml-[36px]"> Sản phẩm </span>
-                <span class="w-[16%] text-center">Tổng</span>
-                <span class="w-[16%] text-center">Trạng thái</span>
+    <!-- <div class="my-[24px] p-[24px] bg-white rounded">
+       <span class="text-[2.5rem]">Thông tin chi tiết đơn hàng</span> 
+       <div class="mt-[24px] flex flex-col gap-6">
+            <div class="flex gap-3 items-center mb-3 text-[1.8rem]">
+                <span class="font-bold">Mã đơn hàng:</span>
+                <span class="text-[#888] ml-3">#01234</span>
             </div>
-            <div
-                v-for="n in 3"
-                :key="n"
-                class="last:pb-[20px] first:pt-[15px] flex items-center px-[20px] shadow-sm bg-[#fff] border-solid border-t border-[#ccc]"
-            >
+            <div class="mt-[24px]">
+                <span class="text-[1.8rem] font-bold mb-6">Sản phẩm</span>
+                <div class="flex gap-3 items-center" v-for="n in 3" :key="n">
+                    <img :src="defaultProduct" alt="" class="w-[120px]">
+
+                    <div class="flex flex-col gap-3 text-[1.8rem] text-[#888]">
+                        <span>Quần áo</span>
+                        <div class="flex gap-3">
+                            <span>Phân loại:</span>
+                            <div>
+                                <span class="mr-3">Xanh</span>
+                                <span >Trắng</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="ml-12 text-[1.8rem] text-[#888]">x2</span>
+                    <span class="ml-6 text-[1.8rem] text-[#888]">123 000 đ</span>
+                </div>
+            </div>
+            <div class="flex gap-3 items-center mb-3 text-[1.8rem]">
+                <span class="font-bold">Phí vận chuyển:</span>
+                <span class="text-[#888] ml-3">123đ</span>
+            </div>
+            <div class="flex gap-3 items-center mb-3 text-[1.8rem]">
+                <span class="font-bold">Tổng tiền:</span>
+                <span class="text-[#888] ml-3">123đ</span>
+            </div>
+            <div class="flex gap-3 items-center mb-3 text-[1.8rem]">
+                <span class="font-bold">Trạng thái:</span>
+                <span class="text-[var(--primary-color)] ml-3">Đang giao</span>
+            </div>
+       </div>
+    </div> -->
+
+    <a-table
+        class="my-[48px] shadow-md"
+        :columns="columns"
+        :data-source="data"
+        :pagination="false"
+    >
+        <template #headerCell="{ column }">
+            <div class="text-[2rem]">{{ column.title }}</div>
+        </template>
+        <template #bodyCell="{ column, record }">
+            <template v-if="column.dataIndex === 'code'">
                 <span
                     class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                    >#333</span
+                    >#{{ record.key }}</span
                 >
-                <div class="flex w-[68%] items-center">
+            </template>
+            <template v-if="column.dataIndex === 'name'">
+                <div class="flex items-center">
                     <img
                         class="w-[80px] object-cover cursor-pointer"
-                        src="https://product.hstatic.net/1000271846/product/pants-black-01_c01c2b917d1b445586fa7f8dd8a1295e_master.jpg"
+                        :src="`http://${record.imgUrl}`"
                         alt=""
                     />
-                    <p
+                    <div
                         class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
                     >
-                        Quần Thun x 1, Áo thun x 2
-                        <span>Quận Tây Hồ, thành phố Hà Nội</span>
-                    </p>
-                </div>
-                <span class="w-[16%] text-center text-[1.8rem]">33đ</span>
-                <span class="w-[16%] text-center text-[1.8rem]"
-                    >Đang được giao</span
-                >
-            </div>
-        </div> -->
-
-        <a-table
-            class="mt-[48px] shadow-md"
-            :columns="columns"
-            :data-source="data"
-        >
-            <template #headerCell="{ column }">
-                <div class="text-[2rem]">{{ column.title }}</div>
-            </template>
-            <template #bodyCell="{ column, record }">
-                <template v-if="column.dataIndex === 'orderId'">
-                    <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{ record.key }}</span
-                    >
-                </template>
-                <template v-if="column.dataIndex === 'name'">
-                    <div class="flex items-center">
-                        <img
-                            class="w-[80px] object-cover cursor-pointer"
-                            :src="defaultProduct"
-                            alt=""
-                        />
-                        <p
-                            class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
-                        >
-                            Quần Thun x 1, Áo thun x 2
-                            <span>Quận Tây Hồ, thành phố Hà Nội</span>
-                        </p>
+                        <span>{{ record.name }}</span>
+                        <div class="flex gap-3">
+                            <span>Phân loại:</span>
+                            <div>
+                                <span v-if='record.value1' class="mr-3">{{record.value1}}</span>
+                                <span v-if='record.value2'>{{record.value2}}</span>
+                            </div>
+                        </div>   
                     </div>
-                </template>
-                <template v-if="column.dataIndex === 'total'">
-                    <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{ record.total }}</span
-                    >
-                </template>
-                <template v-if="column.dataIndex === 'status'">
-                    <span
-                        class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
-                        >#{{ record.status }}</span
-                    >
-                </template>
+                </div>
             </template>
-        </a-table>
-    </div>
+            <template v-if="column.dataIndex === 'quantity'">
+                <span
+                    class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                    >x{{ record.quantity }}</span
+                >
+            </template>
+            <template v-if="column.dataIndex === 'total'">
+                <span
+                    class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                    >{{ record.total }}đ</span
+                >
+            </template>
+            <template v-if="column.dataIndex === 'status'">
+                <span
+                    class="min-w-[100px] pr-[15px] pl-[25px] text-[#888] text-center text text-[1.6rem]"
+                    >{{ record.status }}</span
+                >
+            </template>
+        </template>
+    </a-table>
 </template>

@@ -104,7 +104,7 @@ for (let i = 0; i < 3; ++i) {
             </template>
             <template v-if="column.key === 'tt'">
                 <div class="flex flex-col items-center gap-3">
-                    <a-button>Cập nhật</a-button>
+                    <!-- <a-button>Cập nhật</a-button> -->
                     <a-button>Xoá</a-button>
                 </div>
             </template>

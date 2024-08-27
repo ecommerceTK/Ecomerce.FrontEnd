@@ -59,7 +59,7 @@ const onSubmit = async () => {
     try {
         isLoading.value = true;
         const res = await authServices.login(info);
-        //console.log(res);
+        // console.log(res);
         // localStorage.setItem("token", res.data.result.token);
         setToken(res.data.result.token, res.data.result.refreshToken);
         message.info('Đăng nhập thành công');

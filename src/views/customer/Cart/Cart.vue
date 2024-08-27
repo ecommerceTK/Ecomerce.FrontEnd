@@ -107,6 +107,7 @@ const updateData = () => {
         quantity: cartItem.quantity,
         name: cartItem.name,
         imgUrl: cartItem.imgUrl,
+        valueCombi: cartItem.value_combination_details,
     }));
 
     // console.log(cartItems);
@@ -150,21 +151,36 @@ const rowSelection = {
 const checkOrder = async id => {
     try {
         showLoading.value = true;
-        const res = await mainServices.checkOrder(id);
-        if (res.data.result === 'Success') {
-            router.push({
-                path: '/checkout', // Đường dẫn tới trang checkout
-                query: {
-                    // Truyền tham số qua query
-                    orderId: id,
-                },
-            });
-        } else if (res.data.result === 'Failed') {
-            message.error(
-                'Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại'
-            );
-            showLoading.value = false;
-        }
+        const intervalId = setInterval(async () => {
+            const res = await mainServices.checkOrder(id);
+
+            if(res.data.result) {
+                if (res.data.result === 'Success') {
+                    clearInterval(intervalId);
+                router.push({
+                    path: '/checkout', // Đường dẫn tới trang checkout
+                    query: {
+                        // Truyền tham số qua query
+                        orderId: id,
+                    },
+                });
+            } else if (res.data.result === 'Failed') {
+                message.error(
+                    'Một số mặt hàng không đáp ứng số lượng yêu cầu của bạn. Vui lòng kiểm tra lại'
+                );
+                clearInterval(intervalId);
+                showLoading.value = false;
+            }
+            } else {
+                message.error(
+                    'Vui lòng thử lại'
+                );
+                clearInterval(intervalId);
+                showLoading.value = false;
+            }
+        }, 500);
+        
+
     } catch (err) {
         console.log(err);
         message.error('Đã có lỗi xảy ra');
@@ -250,11 +266,18 @@ onMounted(() => {
                     :src="record.imgUrl ? record.imgUrl : defaultProduct"
                     alt=""
                 />
-                <p
+                <div
                     class="flex-1 flex flex-col text-[16px] pt-[5px] pr-[20px] pl-[10px] overflow-hidden"
                 >
-                    {{ record.name }}
-                </p>
+                    <span>{{ record.name }}</span>
+                    <div class="flex gap-3">
+                        <span>Phân loại:</span>
+                        <div>
+                            <span v-if="record.valueCombi.value1_name" class="mr-3">{{record.valueCombi.value1_name}}</span>
+                            <span v-if="record.valueCombi.value2_name">{{record.valueCombi.value2_name}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <span
                 class="text-center text-[1.8rem]"

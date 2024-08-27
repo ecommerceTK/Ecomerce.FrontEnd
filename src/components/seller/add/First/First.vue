@@ -15,9 +15,7 @@ const formState = reactive({
     categoryId: null,
     description: '',
 });
-const props = defineProps({
-    next: Function,
-});
+
 const idPro = ref(null);
 const emit = defineEmits(['updateId']);
 
@@ -38,7 +36,6 @@ const onSubmit = async () => {
         idPro.value = res.data.result.id;
         emit('updateId', idPro.value);
         message.success('Add info success');
-        props.next();
     } catch (err) {
         console.log(err);
         message.error('Vui lòng nhập đầy đủ thông tin');

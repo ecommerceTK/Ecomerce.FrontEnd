@@ -47,7 +47,7 @@ const { product } = toRefs(props);
                     </div>
                     <span
                         class="truncate text-black text-[1.3rem] min-h-4 flex-shrink-1 ml-auto"
-                        >Còn lại {{ product.sold }}</span
+                        >Đã bán {{ product.sold }}</span
                     >
                 </div>
             </div>

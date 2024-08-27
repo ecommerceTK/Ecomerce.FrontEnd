@@ -3,11 +3,11 @@ import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons-vue';
 import { onMounted, ref, toRefs, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import { defaultAvatar } from '../../../assets';
-import authServices from '../../../domain/authServices';
 import { useAuthToken } from '../../../storage/useAuthToken';
 import { useAuthUser } from '../../../storage/useAuthUser';
 import { useRoute, useRouter } from 'vue-router';
 import mainServices from '../../../domain/mainServices';
+import authServices from '../../../domain/authServices';
 
 const { token, clearToken } = useAuthToken();
 const { userStore, clearUser } = useAuthUser();
